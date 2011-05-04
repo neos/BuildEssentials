@@ -65,6 +65,10 @@
 		<include name="Packages/*/*/Tests/Functional/**/*Test.php"/>
 	</fileset>
 
+	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-functionaljavascripttests">
+		<include name="Packages/*/*/Tests/JavaScript/JUnitRunner.html"/>
+	</fileset>
+
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="paths-packages">
 		<exclude name="."/>
 		<exclude name=".."/>

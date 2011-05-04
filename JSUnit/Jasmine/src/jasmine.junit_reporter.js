@@ -20,7 +20,15 @@
     }
     
     function trim(str) {
-        return str.replace(/^\s+/, "" ).replace(/\s+$/, "" )
+        return str.replace(/^\s+/, "" ).replace(/\s+$/, "" );
+    }
+
+    function escapeInvalidXmlChars(str) {
+        return str.replace(/\&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/\>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/\'/g, "&apos;");
     }
 
     /**
@@ -67,7 +75,7 @@
 
             spec.duration = elapsed(spec.startTime, new Date());
             spec.output = '<testcase classname="' + this.getFullName(spec.suite) +
-                '" name="' + spec.description + '" time="' + spec.duration + '">';
+                '" name="' + escapeInvalidXmlChars(spec.description) + '" time="' + spec.duration + '">';
 
             var failure = "";
             var failures = 0;
@@ -77,7 +85,7 @@
 
                 if (result.type == 'expect' && result.passed && !result.passed()) {
                     failures += 1;
-                    failure += (failures + ": " + result.message + " ");
+                    failure += (failures + ": " + escapeInvalidXmlChars(result.message) + " ");
                 }
             }
             if (failure) {
@@ -120,7 +128,7 @@
             var suites = runner.suites();
             for (var i = 0; i < suites.length; i++) {
                 var suite = suites[i];
-                var fileName = 'TEST-' + this.getFullName(suite).replace(/\s/g, '') + '.xml';
+                var fileName = 'TEST-' + this.getFullName(suite, true) + '.xml';
                 var output = '<?xml version="1.0" encoding="UTF-8" ?>';
                 // if we are consolidating, only write out top-level suites
                 if (this.consolidate && suite.parentSuite) {
@@ -156,17 +164,23 @@
             }
         },
 
-        getFullName: function(suite) {
+        getFullName: function(suite, isFilename) {
+            var fullName;
             if (this.useDotNotation) {
-                var fullName = suite.description;
+                fullName = suite.description;
                 for (var parentSuite = suite.parentSuite; parentSuite; parentSuite = parentSuite.parentSuite) {
                     fullName = parentSuite.description + '.' + fullName;
                 }
-                return fullName;
             }
             else {
-                return suite.getFullName();
+                fullName = suite.getFullName();
             }
+
+            // Either remove or escape invalid XML characters
+            if (isFilename) {
+                return fullName.replace(/[^\w]/g, "");
+            }
+            return escapeInvalidXmlChars(fullName);
         },
 
         log: function(str) {
