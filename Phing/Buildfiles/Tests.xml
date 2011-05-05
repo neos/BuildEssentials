@@ -108,7 +108,6 @@
 		</foreach>
 	</target>
 	<target name="test-js.singletestrunner">
-		<!-- as the Jasmine test runner does not return to the shell after it has been finished, we need to kill it explicitely after a timeout of 15 seconds. -->
-		<exec dir="${project.commonBuildDirectory}JSUnit/Jasmine/test" command="(./envjs.runner.sh ${project.basedir}/${testRunnerFileName}) &amp; sleep 25; childprocess=$!; ps -o ppid,pid | grep $childprocess | awk '{print $2}' | xargs kill" passthru="true" />
+		<exec dir="${project.commonBuildDirectory}JSUnit/Jasmine/test" command="./envjs.runner.sh ${project.basedir}/${testRunnerFileName}" passthru="true" />
 	</target>
 </project>
