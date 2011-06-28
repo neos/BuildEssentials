@@ -1,5 +1,5 @@
 <?php
-namespace F3\FLOW3\Build;
+namespace TYPO3\FLOW3\Build;
 
 /*                                                                        *
  * This script belongs to the FLOW3 build system.                         *
@@ -43,34 +43,45 @@ if (!class_exists('vfsStreamWrapper')) {
  *
  * @param string $className
  * @return void
- * @author Karsten Dambekalns <karsten@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 function loadClassForTesting($className) {
 	$classNameParts = explode('\\', $className);
-	if (is_array($classNameParts) && $classNameParts[0] === 'F3') {
-		$packagesBasePath = dirname(__FILE__) . '/../../../Packages/';
-		$packagesBasePathIterator = new \DirectoryIterator($packagesBasePath);
-		foreach ($packagesBasePathIterator as $fileInfo) {
-			if ($fileInfo->isDir() && !$fileInfo->isDot()) {
-				$classFilePathAndName = $packagesBasePath . $fileInfo->getFilename() . '/' . $classNameParts[1] . '/Classes/';
-				$classFilePathAndName .= implode(array_slice($classNameParts, 2, -1), '/') . '/';
-				$classFilePathAndName .= end($classNameParts) . '.php';
-				if (file_exists($classFilePathAndName)) {
-					require($classFilePathAndName);
-					break;
-				}
+	if (!is_array($classNameParts)) {
+		return;
+	}
+	$indexOfLastClassNamePart = count($classNameParts) - 1;
+
+	foreach (new \DirectoryIterator(__DIR__ . '/../../../Packages/') as $fileInfo) {
+		if (!$fileInfo->isDir() || $fileInfo->isDot()) continue;
+
+		$classFilePathAndName = $fileInfo->getPathname() . '/';
+		foreach ($classNameParts as $index => $classNamePart) {
+			if (file_exists($classFilePathAndName . 'Classes')) {
+				$classFilePathAndName .= 'Classes/';
 			}
+			if ($index === $indexOfLastClassNamePart) {
+				$classFilePathAndName .= $classNamePart . '.php';
+			} elseif (file_exists($classFilePathAndName . $classNamePart)) {
+				$classFilePathAndName .= $classNamePart . '/';
+			} else {
+				break;
+			}
+		}
+
+		if ($classFilePathAndName !== ($fileInfo->getPathname() . '/') && is_file($classFilePathAndName)) {
+			require($classFilePathAndName);
+			break;
 		}
 	}
 }
 
-spl_autoload_register('F3\FLOW3\Build\loadClassForTesting');
+spl_autoload_register('TYPO3\FLOW3\Build\loadClassForTesting');
 
 $_SERVER['FLOW3_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 $_SERVER['FLOW3_WEBPATH'] = dirname(__FILE__) . '/../../../Web/';
-new \F3\FLOW3\Core\Bootstrap('Production');
+new \TYPO3\FLOW3\Core\Bootstrap('Production');
 
-require_once(FLOW3_PATH_FLOW3 . 'Resources/PHP/AutoLoader.php');
 require_once(FLOW3_PATH_FLOW3 . 'Tests/BaseTestCase.php');
 require_once(FLOW3_PATH_FLOW3 . 'Tests/UnitTestCase.php');
 
