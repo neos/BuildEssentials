@@ -21,7 +21,7 @@ namespace F3\FLOW3\Build;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-@require_once('vfsStream/vfsStream.php');
+@include_once('vfsStream/vfsStream.php');
 if (!class_exists('vfsStreamWrapper')) {
 	exit(PHP_EOL . 'FLOW3 Bootstrap Error: The functional test bootstrap requires vfsStream to be installed (e.g. via PEAR). Please also make sure that it is accessible via the PHP include path.' . PHP_EOL . PHP_EOL);
 }
