@@ -39,7 +39,7 @@
 	</target>
 
 	<target name="lint-docbook">
-		<xmllint schema="${project.buildDirectory}/Resources/Manual/Xsd/docbook.xsd">
+		<xmllint schema="${project.buildDirectory}/Common/Resources/Manual/Xsd/docbook.xsd">
 			<fileset refid="files-docbook-xml"/>
 		</xmllint>
 	</target>
