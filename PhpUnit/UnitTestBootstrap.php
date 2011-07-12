@@ -57,19 +57,19 @@ function loadClassForTesting($className) {
 
 		$classFilePathAndName = $fileInfo->getPathname() . '/';
 		foreach ($classNameParts as $index => $classNamePart) {
-			if (file_exists($classFilePathAndName . 'Classes')) {
-				$classFilePathAndName .= 'Classes/';
-			}
-			if ($index === $indexOfLastClassNamePart) {
-				$classFilePathAndName .= $classNamePart . '.php';
-			} elseif (file_exists($classFilePathAndName . $classNamePart)) {
-				$classFilePathAndName .= $classNamePart . '/';
-			} else {
+			$classFilePathAndName .= $classNamePart;
+			if (file_exists($classFilePathAndName)) {
 				break;
 			}
+			$classFilePathAndName .= '.';
 		}
 
-		if ($classFilePathAndName !== ($fileInfo->getPathname() . '/') && is_file($classFilePathAndName)) {
+		if (!file_exists($classFilePathAndName . '/Classes')) {
+			continue;
+		}
+
+		$classFilePathAndName .= '/Classes/' . implode('/', array_slice($classNameParts, $index + 1)) . '.php';
+		if (is_file($classFilePathAndName)) {
 			require($classFilePathAndName);
 			break;
 		}

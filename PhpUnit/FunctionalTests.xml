@@ -6,7 +6,7 @@
 		convertWarningsToExceptions="true">
 	<testsuites>
 		<testsuite name="All tests">
-			<directory>../../../Packages/*/TYPO3/*/Tests/Functional</directory>
+			<directory>../../../Packages/*/TYPO3.*/Tests/Functional</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
