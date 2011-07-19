@@ -68,9 +68,10 @@ function loadClassForTesting($className) {
 			continue;
 		}
 
-		$classFilePathAndName .= '/Classes/' . implode('/', array_slice($classNameParts, $index + 1)) . '.php';
-		if (is_file($classFilePathAndName)) {
-			require($classFilePathAndName);
+		$classesOrTests = ($classNameParts[$index + 1] === 'Tests' && isset($classNameParts[$index + 2]) && $classNameParts[$index + 2] === 'Unit') ? '/' : '/Classes/';
+		$classesFilePathAndName = $classFilePathAndName . $classesOrTests . implode('/', array_slice($classNameParts, $index + 1)) . '.php';
+		if (is_file($classesFilePathAndName)) {
+			require($classesFilePathAndName);
 			break;
 		}
 	}
