@@ -36,9 +36,9 @@
 	</target>
 
 	<target name="doc-render-manuals">
-		<foreach param="path.package" target="doc-render-manual">
+		<!--<foreach param="path.package" target="doc-render-manual">
 			<fileset refid="paths-packages"/>
-		</foreach>
+		</foreach>-->
 	</target>
 
 	<target name="doc-clean-package">

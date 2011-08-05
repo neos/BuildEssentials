@@ -57,21 +57,21 @@
 	</fileset>
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-unittests">
-		<include name="Packages/*/TYPO3/*/Tests/Unit/**/*Test.php"/>
+		<include name="Packages/*/TYPO3.*/Tests/Unit/**/*Test.php"/>
 	</fileset>
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-functionaltests">
-		<include name="Packages/*/TYPO3/*/Tests/Functional/**/*Test.php"/>
+		<include name="Packages/*/TYPO3.*/Tests/Functional/**/*Test.php"/>
 	</fileset>
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-functionaljavascripttests">
-		<include name="Packages/*/TYPO3/*/Tests/JavaScript/JUnitRunner.html"/>
+		<include name="Packages/*/TYPO3.*/Tests/JavaScript/JUnitRunner.html"/>
 	</fileset>
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="paths-packages">
 		<exclude name="."/>
 		<exclude name=".."/>
-		<include name="Packages/*/TYPO3/*"/>
+		<include name="Packages/*/TYPO3.*"/>
 		<type type="dir"/>
 	</fileset>
 

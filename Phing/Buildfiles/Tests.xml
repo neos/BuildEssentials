@@ -32,16 +32,10 @@
 	</target>
 
 	<target name="lint-js">
-		<mkdir dir="${project.reportsDirectory}"/>
+		<!--<mkdir dir="${project.reportsDirectory}"/>
 		<jsllint haltonfailure="true" showwarnings="false">
 			<fileset refid="files-js"/>
-		</jsllint>
-	</target>
-
-	<target name="lint-docbook">
-		<xmllint schema="${project.buildDirectory}/Common/Resources/Manual/Xsd/docbook.xsd">
-			<fileset refid="files-docbook-xml"/>
-		</xmllint>
+		</jsllint>-->
 	</target>
 
 
