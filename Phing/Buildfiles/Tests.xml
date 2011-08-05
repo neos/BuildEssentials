@@ -20,18 +20,18 @@
 -->
 <project name="Tests">
 
-	<target name="lint" depends="lint-php, lint-js" description="Run lint on source files"/>
+	<target name="lint" depends="lint-php, lint-js" description="Run lint on source files" />
 	<target name="test" depends="test-unit, test-functional" description="Run unit and functional tests"/>
 
 
-	<target name="lint-php">
+	<target name="lint-php" unless="skipLint">
 		<mkdir dir="${project.reportsDirectory}"/>
 		<phplint haltonfailure="true" level="debug" tofile="${project.reportsDirectory}/LintPhp.txt">
 			<fileset refid="files-php"/>
 		</phplint>
 	</target>
 
-	<target name="lint-js">
+	<target name="lint-js" unless="skipLint">
 		<!--<mkdir dir="${project.reportsDirectory}"/>
 		<jsllint haltonfailure="true" showwarnings="false">
 			<fileset refid="files-js"/>
@@ -39,7 +39,7 @@
 	</target>
 
 
-	<target name="test-unit" description="Run unit tests">
+	<target name="test-unit" description="Run unit tests" unless="skipTests">
 		<mkdir dir="${project.reportsDirectory}"/>
 		<if>
 			<isset property="collectCodeCoverage"/>
@@ -57,7 +57,7 @@
 		<phingcall target="phpunit-checkresult"/>
 	</target>
 
-	<target name="test-functional" description="Run functional tests">
+	<target name="test-functional" description="Run functional tests"  unless="skipTests">
 		<mkdir dir="${project.reportsDirectory}"/>
 		<exec command="phpunit -c &quot;${project.commonBuildDirectory}PhpUnit/FunctionalTests.xml&quot;" passthru="true" returnProperty="phpUnitResult"/>
 

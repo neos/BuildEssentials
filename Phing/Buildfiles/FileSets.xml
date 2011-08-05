@@ -22,6 +22,7 @@
 
 	<fileset dir="${project.basedir}" id="files-for-release-archive">
 		<exclude name="**dir_conflicts.prej"/>
+		<exclude name="**/.git**" />
 		<exclude name="Configuration/Production/IncludeCachedConfigurations.php"/>
 		<exclude name="Data/Temporary**"/>
 		<exclude name="Data/Logs/**"/>
