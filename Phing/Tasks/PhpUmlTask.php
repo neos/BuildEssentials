@@ -70,7 +70,6 @@ class PhpUmlTask extends Task {
 
 	/**
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function main() {
 		$this->log('Calling PHP_UML on ' . $this->input);

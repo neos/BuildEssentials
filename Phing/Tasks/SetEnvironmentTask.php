@@ -58,7 +58,6 @@ class SetEnvironmentTask extends Task {
 	 * Sets the environment variable specified by name and value.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function main() {
 		$this->log('Calling SetEnvironment (' . $this->name .'=' . $this->value . ')');

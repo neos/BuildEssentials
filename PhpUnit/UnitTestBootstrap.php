@@ -43,7 +43,6 @@ if (!class_exists('vfsStreamWrapper')) {
  *
  * @param string $className
  * @return void
- * @author Robert Lemke <robert@typo3.org>
  */
 function loadClassForTesting($className) {
 	$classNameParts = explode('\\', $className);
