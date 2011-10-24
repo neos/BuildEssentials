@@ -40,6 +40,8 @@
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-php">
 		<include name="Packages/**/Classes/**/*.php"/>
+		<exclude name="Packages/Framework/Doctrine*"/>
+		<exclude name="Packages/Framework/Symfony.Component.Yaml"/>
 	</fileset>
 
 	<fileset dir="${project.basedir}" expandsymboliclinks="true" id="files-js">
