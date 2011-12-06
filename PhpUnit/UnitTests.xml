@@ -9,11 +9,6 @@
 			<directory>../../../Packages/*/TYPO3.*/Tests/Unit</directory>
 		</testsuite>
 	</testsuites>
-	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory>../../../Packages/*/TYPO3.*/Classes</directory>
-		</whitelist>
-	</filter>
 	<logging>
 		<log type="junit" target="../../Reports/UnitTests.xml" logIncompleteSkipped="false"/>
 	</logging>
