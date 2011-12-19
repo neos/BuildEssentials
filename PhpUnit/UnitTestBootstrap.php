@@ -84,5 +84,6 @@ new \TYPO3\FLOW3\Core\Bootstrap('Production');
 
 require_once(FLOW3_PATH_FLOW3 . 'Tests/BaseTestCase.php');
 require_once(FLOW3_PATH_FLOW3 . 'Tests/UnitTestCase.php');
+require_once(FLOW3_PATH_FLOW3 . 'Classes/Error/Debugger.php');
 
 ?>
