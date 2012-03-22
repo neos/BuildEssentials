@@ -30,17 +30,6 @@ if (!class_exists('vfsStreamWrapper')) {
  * A simple class loader that deals with the Framework classes and is intended
  * for use with unit tests executed by PHPUnit.
  *
- * PHPUnit offers the possibility to use a "bootstrap" file with every test.
- *
- * This file can be used and will register a simple autoloader so that the files
- * used in the tests can be found.
- *
- * To use PHPUnit with Netbeans create a folder to be used as project test folder
- * and populate it with something like
- *  for i in `ls ../Packages/Framework/` ;
- *    do ln -s ../Packages/Framework/$i/Tests/Unit $i ;
- *  done
- *
  * @param string $className
  * @return void
  */
