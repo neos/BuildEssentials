@@ -6,12 +6,13 @@
 		convertWarningsToExceptions="true">
 	<testsuites>
 		<testsuite name="All tests">
-			<directory>../../../Packages/*/TYPO3.*/Tests/Unit</directory>
+			<directory>../../../Packages/*/*/Tests/Unit</directory>
+			<exclude>../../../Packages/Libraries</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="false">
-			<directory>../../../Packages/*/TYPO3.*/Classes</directory>
+			<directory>../../../Packages/*/*/Classes</directory>
 		</whitelist>
 	</filter>
 	<logging>

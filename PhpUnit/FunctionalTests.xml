@@ -7,7 +7,8 @@
 		timeoutForSmallTests="0">
 	<testsuites>
 		<testsuite name="All tests">
-			<directory>../../../Packages/*/TYPO3.*/Tests/Functional</directory>
+			<directory>../../../Packages/*/*/Tests/Functional</directory>
+			<exclude>../../../Packages/Libraries</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>
