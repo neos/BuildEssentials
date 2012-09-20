@@ -28,7 +28,7 @@ if (!class_exists('vfsStreamWrapper')) {
 
 $_SERVER['FLOW3_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 
-require_once($_SERVER['FLOW3_ROOTPATH'] . 'Packages/Framework/TYPO3.FLOW3/Classes/Core/Bootstrap.php');
+require_once($_SERVER['FLOW3_ROOTPATH'] . 'Packages/Framework/TYPO3.FLOW3/Classes/TYPO3/FLOW3/Core/Bootstrap.php');
 
 $bootstrap = new \TYPO3\FLOW3\Core\Bootstrap('Testing');
 $bootstrap->setPreselectedRequestHandlerClassName('TYPO3\FLOW3\Tests\FunctionalTestRequestHandler');
