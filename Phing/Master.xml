@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * This script belongs to the FLOW3 build system.                         *
+ * This script belongs to the TYPO3 Flow build system.                    *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License as published by the *
- * Free Software Foundation, either version 3 of the License, or (at your *
- * option) any later version.                                             *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ * of the License, or (at your option) any later version.                 *
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        *
 
 To run the targets in this Phing script you need (the latest versions of):
 
@@ -44,12 +35,12 @@ PHP_UML - for API documentation rendering
 JavaScript Lint - for linting JS files
  http://www.javascriptlint.com/download.htm
 -->
-<project name="FLOW3 Build System" default="help" basedir="./">
+<project name="TYPO3 Flow Build System" default="help" basedir="./">
 
 	<target name="help">
 		<echo>
 
-	Welcome to the FLOW3 build system!
+	Welcome to the TYPO3 Flow build system!
 	----------------------------------
 	You may use the following command format to perform a task:
 	      phing -f Build/Common/Phing/Master.xml &lt;task&gt;

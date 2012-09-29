@@ -1,7 +1,7 @@
 <?php
 
 /*                                                                        *
- * This script belongs to the FLOW3 build system.                         *
+ * This script belongs to the TYPO3 Flow build system.                    *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU General Public License, either version 3 of the   *
@@ -64,7 +64,7 @@ use TYPO3\Surf\Domain\Model\SimpleWorkflow;
  * - CREATE_TAGS -- if set to string "false", the distribution and submodules are not tagged
  */
 
-$application = new \TYPO3\Surf\Application\FLOW3Distribution();
+$application = new \TYPO3\Surf\Application\FlowDistribution();
 
 if (getenv('VERSION')) {
 	$application->setOption('version', getenv('VERSION'));
@@ -103,10 +103,10 @@ $deployment->setWorkflow($workflow);
 	// Remove the setfilepermissions task because Surf doesn't use sudo ...
 	// And we do not need any data or configuration in the release archives ...
 $deployment->onInitialize(function() use ($workflow, $application) {
-	$workflow->removeTask('typo3.surf:flow3:setfilepermissions');
-	$workflow->removeTask('typo3.surf:flow3:symlinkdata');
-	$workflow->removeTask('typo3.surf:flow3:symlinkconfiguration');
-	$workflow->removeTask('typo3.surf:flow3:copyconfiguration');
+	$workflow->removeTask('typo3.surf:flow:setfilepermissions');
+	$workflow->removeTask('typo3.surf:flow:symlinkdata');
+	$workflow->removeTask('typo3.surf:flow:symlinkconfiguration');
+	$workflow->removeTask('typo3.surf:flow:copyconfiguration');
 });
 
 $workflow->setEnableRollback(FALSE);

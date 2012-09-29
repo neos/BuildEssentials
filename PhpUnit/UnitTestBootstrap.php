@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\FLOW3\Build;
+namespace TYPO3\Flow\Build;
 
 /*                                                                        *
- * This script belongs to the FLOW3 build system.                         *
+ * This script belongs to the TYPO3 Flow build system.                    *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU General Public License, either version 3 of the   *
@@ -13,23 +13,23 @@ namespace TYPO3\FLOW3\Build;
 
 $composerAutoloader = __DIR__ . '/../../../Packages/Vendor/autoload.php';
 if(!file_exists($composerAutoloader)) {
-	exit(PHP_EOL . 'FLOW3 Bootstrap Error: The unit test bootstrap requires the autoloader file created at install time by Composer. Looked for "' . $composerAutoloader . '" without success.');
+	exit(PHP_EOL . 'TYPO3 Flow Bootstrap Error: The unit test bootstrap requires the autoloader file created at install time by Composer. Looked for "' . $composerAutoloader . '" without success.');
 }
 require_once($composerAutoloader);
 
 if (!class_exists('org\bovigo\vfs\vfsStream')) {
-	exit(PHP_EOL . 'FLOW3 Bootstrap Error: The unit test bootstrap requires vfsStream to be installed. Try "composer update --dev".' . PHP_EOL . PHP_EOL);
+	exit(PHP_EOL . 'TYPO3 Flow Bootstrap Error: The unit test bootstrap requires vfsStream to be installed. Try "composer update --dev".' . PHP_EOL . PHP_EOL);
 }
 
-spl_autoload_register('TYPO3\FLOW3\Build\loadClassForTesting');
+spl_autoload_register('TYPO3\Flow\Build\loadClassForTesting');
 
-$_SERVER['FLOW3_ROOTPATH'] = dirname(__FILE__) . '/../../../';
-$_SERVER['FLOW3_WEBPATH'] = dirname(__FILE__) . '/../../../Web/';
-new \TYPO3\FLOW3\Core\Bootstrap('Production');
+$_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
+$_SERVER['FLOW_WEBPATH'] = dirname(__FILE__) . '/../../../Web/';
+new \TYPO3\Flow\Core\Bootstrap('Production');
 
-require_once(FLOW3_PATH_FLOW3 . 'Tests/BaseTestCase.php');
-require_once(FLOW3_PATH_FLOW3 . 'Tests/UnitTestCase.php');
-require_once(FLOW3_PATH_FLOW3 . 'Classes/TYPO3/FLOW3/Error/Debugger.php');
+require_once(FLOW_PATH_FLOW . 'Tests/BaseTestCase.php');
+require_once(FLOW_PATH_FLOW . 'Tests/UnitTestCase.php');
+require_once(FLOW_PATH_FLOW . 'Classes/TYPO3/Flow/Error/Debugger.php');
 
 /**
  * A simple class loader that deals with the Framework classes and is intended
