@@ -1,0 +1,8 @@
+{
+	"name": "TYPO3 Flow",
+	"version": "0.0.0",
+	"scripts": {
+		"server": "./Build/buildessentials/JSUnit/buster.sh",
+		"test": "./node_modules/buster/bin/buster-test --reporter dots --config Build/JSUnit/buster.js"
+	}
+}

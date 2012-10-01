@@ -1,0 +1,26 @@
+Read all about Buster.js on http://busterjs.org/
+
+Enabling Buster.js Testing
+==========================
+
+Create a package.json file in the root of your distribution. You can use
+``Build/buildessentials/JSUnit/Templates/package.json`` as example. Now create
+a ``Build/JSUnit/buster.js`` file which will initialize your testing environment.
+An example can be found in ``Build/buildessentials/JSUnit/Templates/buster.js``.
+This file can then be used for a global project test run. For testing specific
+packages you should add a buster.js file to the package.
+
+Installing Buster.js
+====================
+
+npm install -g buster
+
+Starting Buster.js
+==================
+
+npm run-script server
+
+Running Tests
+=============
+
+npm test
