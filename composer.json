@@ -1,6 +1,6 @@
 {
     "name": "typo3/buildessentials",
-    "type": "flow-build",
+    "type": "typo3-flow-build",
     "description": "TYPO3 Flow Build Toolchain Essentials",
     "license": ["LGPL-3.0+"],
     "require": {
