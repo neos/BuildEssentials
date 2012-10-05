@@ -24,3 +24,12 @@ Running Tests
 =============
 
 npm test
+
+Tips
+====
+
+* If you want to see all the resources published for testing by buster.js you can
+  go to http://localhost:1111/resources
+
+* To see which HTTP requests are done during the test run you can attach a browser
+  using http://localhost:1111/attach and use your normal browser talks
