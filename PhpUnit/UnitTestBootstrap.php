@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Build;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-$composerAutoloader = __DIR__ . '/../../../Packages/Vendor/autoload.php';
+$composerAutoloader = __DIR__ . '/../../../Packages/Libraries/autoload.php';
 if(!file_exists($composerAutoloader)) {
 	exit(PHP_EOL . 'TYPO3 Flow Bootstrap Error: The unit test bootstrap requires the autoloader file created at install time by Composer. Looked for "' . $composerAutoloader . '" without success.');
 }
@@ -45,7 +45,7 @@ function loadClassForTesting($className) {
 	}
 
 	foreach (new \DirectoryIterator(__DIR__ . '/../../../Packages/') as $fileInfo) {
-		if (!$fileInfo->isDir() || $fileInfo->isDot() || $fileInfo->getFilename() === 'Vendor') continue;
+		if (!$fileInfo->isDir() || $fileInfo->isDot() || $fileInfo->getFilename() === 'Libraries') continue;
 
 		$classFilePathAndName = $fileInfo->getPathname() . '/';
 		foreach ($classNameParts as $index => $classNamePart) {
