@@ -20,4 +20,7 @@
 		<log type="junit" target="../../Reports/FunctionalTests.xml" logIncompleteSkipped="false"/>
 		<log type="testdox-text" target="../../Reports/FunctionalTestDox.txt"/>
 	</logging>
+	<php>
+		<env name="FLOW_REWRITEURLS" value="1"/>
+	</php>
 </phpunit>
