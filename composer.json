@@ -8,8 +8,6 @@
         "typo3/flow-composer-installers": "*"
     },
 	"extra": {
-		"typo3/flow": {
-			"case-sensitive-package-name": "BuildEssentials"
-		}
+		"installer-name": "BuildEssentials"
 	}
 }
