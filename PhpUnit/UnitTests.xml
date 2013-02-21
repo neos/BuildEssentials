@@ -3,7 +3,8 @@
 		bootstrap="UnitTestBootstrap.php"
 		convertErrorsToExceptions="true"
 		convertNoticesToExceptions="true"
-		convertWarningsToExceptions="true">
+		convertWarningsToExceptions="true"
+		timeoutForSmallTests="0">
 	<testsuites>
 		<testsuite name="All tests">
 			<directory>../../../Packages/*/*/Tests/Unit</directory>
