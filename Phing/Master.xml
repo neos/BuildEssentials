@@ -43,19 +43,19 @@ JavaScript Lint - for linting JS files
 	Welcome to the TYPO3 Flow build system!
 	----------------------------------
 	You may use the following command format to perform a task:
-	      phing -f Build/Common/Phing/Master.xml &lt;task&gt;
+	      phing -f Build/BuildEssentials/Phing/Master.xml &lt;task&gt;
 
 	Flags and properties can be given to Phing like this
-	      phing -f Build/Common/Phing/Master.xml -Dsomeflag
-	      phing -f Build/Common/Phing/Master.xml -Dname=value
+	      phing -f Build/BuildEssentials/Phing/Master.xml -Dsomeflag
+	      phing -f Build/BuildEssentials/Phing/Master.xml -Dname=value
 
 	The available tasks can be listed with
-	      phing -f Build/Common/Phing/Master.xml -l
+	      phing -f Build/BuildEssentials/Phing/Master.xml -l
 		</echo>
 	</target>
 
-	<property file="Build/Common/Phing/Phing.properties" />
-	<taskdef file="Build/Common/Phing/Tasks.properties"/>
+	<property file="Build/BuildEssentials/Phing/Phing.properties" />
+	<taskdef file="Build/BuildEssentials/Phing/Tasks.properties"/>
 
 	<if>
 		<available file="Build/Phing/Phing.properties" type="file"/>
@@ -70,7 +70,7 @@ JavaScript Lint - for linting JS files
 		</then>
 	</if>
 
-	<import file="Build/Common/Phing/Buildfiles/FileSets.xml"/>
+	<import file="Build/BuildEssentials/Phing/Buildfiles/FileSets.xml"/>
 	<if>
 		<available file="Build/Phing/FileSets.xml" type="file"/>
 		<then>
@@ -78,10 +78,10 @@ JavaScript Lint - for linting JS files
 		</then>
 	</if>
 
-	<import file="Build/Common/Phing/Buildfiles/Metrics.xml"/>
-	<import file="Build/Common/Phing/Buildfiles/Tests.xml"/>
-	<import file="Build/Common/Phing/Buildfiles/Documentation.xml"/>
-	<import file="Build/Common/Phing/Buildfiles/Build.xml"/>
+	<import file="Build/BuildEssentials/Phing/Buildfiles/Metrics.xml"/>
+	<import file="Build/BuildEssentials/Phing/Buildfiles/Tests.xml"/>
+	<import file="Build/BuildEssentials/Phing/Buildfiles/Documentation.xml"/>
+	<import file="Build/BuildEssentials/Phing/Buildfiles/Build.xml"/>
 
 	<if>
 		<available file="Build/Phing/Build.xml" type="file"/>
