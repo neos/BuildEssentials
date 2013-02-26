@@ -21,7 +21,7 @@ use TYPO3\Surf\Domain\Model\SimpleWorkflow;
  * You will include this file into your Surf deployment configuration if you want to control the
  * deployment using environment variables from e.g. Jenkins. Usually, you will do the following:
  *
- *   include('path/to/Build/Common/Surf/CommonJenkinsDistributionBuild.php');
+ *   include('path/to/Build/BuildEssentials/Surf/CommonJenkinsDistributionBuild.php');
  *
  *   $application->setOption('projectName', 'your-project-name-here');
  *   $application->setOption('repositoryUrl', 'git://git.typo3.org/your-git-url-here.git');
