@@ -18,5 +18,5 @@ foreach ($projects as $identifier => $projectData) {
 	}
 
 	echo 'Working on ' . $projectPath . PHP_EOL;
-	passthru(sprintf('cd %s; crowdin-cli download', $projectPath));
+	passthru(sprintf('cd %s; crowdin-cli download', escapeshellarg($projectPath)));
 }
