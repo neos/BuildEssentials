@@ -18,8 +18,8 @@ foreach ($projects as $identifier => $projectData) {
 	}
 
 	echo 'Working on ' . $projectPath . PHP_EOL;
-	passthru(sprintf('cd %s; crowdin-cli upload sources', $projectPath));
+	passthru(sprintf('cd %s; crowdin-cli upload sources', escapeshellarg($projectPath)));
 	if (isset($argv[2]) && $argv[2] === '--translations') {
-		passthru(sprintf('cd %s; crowdin-cli upload translations', $projectPath));
+		passthru(sprintf('cd %s; crowdin-cli upload translations', escapeshellarg($projectPath)));
 	}
 }
