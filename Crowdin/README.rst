@@ -21,7 +21,7 @@ Now create a JSON file in your project root, e.g. named ``crowdin.json``::
 		}
 	}
 
-.. note:: You should never committ this to Git, as it contains your secret keys.
+.. note:: You should never commit this to Git, as it contains your secret keys.
 
 Now you can run::
 
@@ -46,7 +46,7 @@ Running this will download the translations from Crowdin::
 
 	php Build/BuildEssentials/Download.php `pwd`/crowdin.json
 
-The updates the XLIFF files with translations from crowdin, review and commit as
+This updates the XLIFF files with translations from Crowdin; review and commit as
 you like.
 
 To remove all generated ``crowdin.yaml`` files again use::
