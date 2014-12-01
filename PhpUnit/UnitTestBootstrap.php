@@ -50,22 +50,16 @@ function loadClassForTesting($className) {
 		$classFilePathAndName = $fileInfo->getPathname() . '/';
 		foreach ($classNameParts as $index => $classNamePart) {
 			$classFilePathAndName .= $classNamePart;
-			if (file_exists($classFilePathAndName)) {
-				break;
+			if (file_exists($classFilePathAndName . '/Classes')) {
+				$packageKeyParts = array_slice($classNameParts, 0, $index + 1);
+				$classesOrTests = ($classNameParts[$index + 1] === 'Tests' && isset($classNameParts[$index + 2]) && $classNameParts[$index + 2] === 'Unit') ? '/' : '/Classes/' . implode('/', $packageKeyParts) . '/';
+				$classesFilePathAndName = $classFilePathAndName . $classesOrTests . implode('/', array_slice($classNameParts, $index + 1)) . '.php';
+				if (is_file($classesFilePathAndName)) {
+					require($classesFilePathAndName);
+					break;
+				}
 			}
 			$classFilePathAndName .= '.';
-		}
-
-		if (!file_exists($classFilePathAndName . '/Classes')) {
-			continue;
-		}
-
-		$packageKeyParts = array_slice($classNameParts, 0, $index + 1);
-		$classesOrTests = ($classNameParts[$index + 1] === 'Tests' && isset($classNameParts[$index + 2]) && $classNameParts[$index + 2] === 'Unit') ? '/' : '/Classes/' . implode('/', $packageKeyParts) . '/';
-		$classesFilePathAndName = $classFilePathAndName . $classesOrTests . implode('/', array_slice($classNameParts, $index + 1)) . '.php';
-		if (is_file($classesFilePathAndName)) {
-			require($classesFilePathAndName);
-			break;
 		}
 	}
 }
