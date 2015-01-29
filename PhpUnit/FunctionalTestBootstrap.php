@@ -13,10 +13,13 @@ namespace TYPO3\Flow\Build;
 
 $_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 
+if (DIRECTORY_SEPARATOR === '/') {
+	// Fixes an issue with the autoloader, see FLOW-183
+	shell_exec('cd ' . escapeshellarg($_SERVER['FLOW_ROOTPATH']) . ' && FLOW_CONTEXT=Testing ./flow flow:cache:warmup');
+}
+
 require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/TYPO3.Flow/Classes/TYPO3/Flow/Core/Bootstrap.php');
 
 $bootstrap = new \TYPO3\Flow\Core\Bootstrap('Testing');
 $bootstrap->setPreselectedRequestHandlerClassName('TYPO3\Flow\Tests\FunctionalTestRequestHandler');
 $bootstrap->run();
-
-?>

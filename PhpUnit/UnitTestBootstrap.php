@@ -63,5 +63,3 @@ function loadClassForTesting($className) {
 		}
 	}
 }
-
-?>
