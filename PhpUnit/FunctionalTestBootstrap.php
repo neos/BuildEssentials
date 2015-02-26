@@ -11,6 +11,12 @@ namespace TYPO3\Flow\Build;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+$context = isset($_SERVER['FLOW_CONTEXT']) ? $_SERVER['FLOW_CONTEXT'] : 'Testing';
+
+if (preg_match('/^(?:Testing|Testing\/.+)$/', $context) !== 1) {
+	die(sprintf('The context "%s" is not allowed. Only "Testing" context or one of its subcontexts "Testing/*" is allowed.', $context));
+}
+
 $_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 
 if (DIRECTORY_SEPARATOR === '/') {
@@ -19,7 +25,6 @@ if (DIRECTORY_SEPARATOR === '/') {
 }
 
 require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/TYPO3.Flow/Classes/TYPO3/Flow/Core/Bootstrap.php');
-
-$bootstrap = new \TYPO3\Flow\Core\Bootstrap('Testing');
+$bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
 $bootstrap->setPreselectedRequestHandlerClassName('TYPO3\Flow\Tests\FunctionalTestRequestHandler');
 $bootstrap->run();
