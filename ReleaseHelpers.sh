@@ -26,24 +26,34 @@ function push_tag {
 	fi
 }
 
-# arguments: BRANCH, BUILD_URL, DIR (optional)
+# arguments: BRANCH, BUILD_URL, VERSION, DIR (optional)
 function commit_manifest_update {
 	local BRANCH=$1
 	local BUILD_URL=$2
-	local DIR=$3
+	local VERSION=$3
+	local DIR=$4
 
 	if [ -z "${DIR}" ] ; then
 		if [[ `git status --porcelain composer.json` ]] ; then
 			git add composer.json
-			git commit -m "[TASK] Update composer manifest" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
+			git commit -m "[TASK] Update composer manifest for ${VERSION} release" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
 		fi
 	else
 		if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain composer.json` ]] ; then
 			git --git-dir "${DIR}/.git" --work-tree "${DIR}" add composer.json
-			git --git-dir "${DIR}/.git" --work-tree "${DIR}" commit -m "[TASK] Update composer manifest" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
+			git --git-dir "${DIR}/.git" --work-tree "${DIR}" commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
 		fi
 	fi
+}
 
+# arguments: BRANCH, BUILD_URL
+function commit_manifest_revert {
+	local BRANCH=$1
+	local BUILD_URL=$2
+
+	git checkout origin/$BRANCH composer.json
+	git add composer.json
+	git commit -m "[TASK] Revert composer manifest to dev versions" -m "See ${BUILD_URL}"
 }
 
 # arguments: BRANCH, DIR (optional)
