@@ -36,7 +36,7 @@ function commit_manifest_update {
 	if [ -z "${DIR}" ] ; then
 		if [[ `git status --porcelain composer.json` ]] ; then
 			git add composer.json
-			git commit -m "[TASK] Update composer manifest for ${VERSION} release" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
+			git commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}" -m "Releases: ${BRANCH}"
 		fi
 	else
 		if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain composer.json` ]] ; then
