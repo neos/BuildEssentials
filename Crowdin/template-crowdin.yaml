@@ -3,7 +3,4 @@ api_key: '%s'
 base_path: '.'
 
 files:
-  -
-    source: '/Resources/Private/Translations/en/*.xlf'
-    translation: '/Resources/Private/Translations/%%two_letters_code%%/%%original_file_name%%'
-    update_option: 'update_as_unapproved'
+%s

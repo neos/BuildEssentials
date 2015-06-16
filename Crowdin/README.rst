@@ -4,17 +4,20 @@ Crowdin Translation Support
 Crowdin (https://crowdin.net/) is an online localization management platform.
 The tools in this folder allow to use it for Flow packages.
 
-You need to have the crowdin-cli binary installed, see https://crowdin.net/page/cli-tool.
+Configuration
+-------------
+
+You need to have the crowdin-cli tool installed, see https://crowdin.net/page/cli-tool.
 
 Now create a JSON file in your project root, e.g. named ``crowdin.json``::
 
 	{
-		"typo3-form": {
+		"acme-foo": {
 			"name": "Acme Foo",
-			"path": "Packages/Application/Acem.Foo",
+			"path": "Packages/Application/Acme.Foo",
 			"apiKey": "<project api key>"
 		},
-		"typo3-media": {
+		"acme-bar": {
 			"name": "Acme Bar",
 			"path": "Packages/Application/Acme.Bar",
 			"apiKey": "<project api key>"
@@ -32,15 +35,46 @@ This will create ``crowdin.yaml`` in every project configured in ``crowdin.json`
 .. note:: You should exclude ``crowdin.yaml`` from Git, so it cannot be committed by
 	accident (as it contains your secret keys)
 
+Bundling projects
+^^^^^^^^^^^^^^^^^
+
+Instead of using a single Crowdin project per package, you ca also use bundling to have all
+XLIFF files (sources and translations) be handled in a single Crowdin project. This allows
+for better overview, uses a single translation memory and glossary and thus makes the life
+of translators easier.
+
+To use bundling, set up ``crowdin.json`` like above but include a special ``__bundle`` entry::
+
+	{
+		"__bundle": {
+			"projectIdentifier": "<project identifier>",
+			"apiKey": "<project api key>"
+		},
+		"acme-foo": {
+			…
+		}
+	}
+
+The individual project entries can still have ``apiKey`` entries, they will be ignored.
+Keeping them allows to reuse the same ``crowdin.json`` file for bundled and non-bundled
+use (should that ever be needed).
+
+Then call the setup script like this::
+
+	php Build/BuildEssentials/Setup.php `pwd`/crowdin.json --bundle
+
+Usage
+-----
+
 Now you can run::
 
 	php Build/BuildEssentials/Upload.php `pwd`/crowdin.json
 
-This will upload the source XLIFF files and existing translation to Crowdin. Using::
+This will upload the source XLIFF files to Crowdin. Using::
 
 	php Build/BuildEssentials/Upload.php `pwd`/crowdin.json --translations
 
-existing translations will be uploaded (synchronized) as well.
+sources and existing translations will be uploaded (synchronized) in one go.
 
 Running this will download the translations from Crowdin::
 
@@ -48,6 +82,12 @@ Running this will download the translations from Crowdin::
 
 This updates the XLIFF files with translations from Crowdin; review and commit as
 you like.
+
+All of the above commands can be called with ``--bundle`` to use project bundling::
+
+	php Build/BuildEssentials/Upload.php `pwd`/crowdin.json --bundle
+	php Build/BuildEssentials/Upload.php `pwd`/crowdin.json --bundle --translations
+	php Build/BuildEssentials/Download.php `pwd`/crowdin.json --bundle
 
 To remove all generated ``crowdin.yaml`` files again use::
 
