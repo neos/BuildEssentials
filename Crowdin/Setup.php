@@ -3,19 +3,51 @@
 require(__DIR__ . '/Helpers.php');
 
 $configurationFileTemplate = file_get_contents(__DIR__ . '/template-crowdin.yaml');
+$filesEntryTemplate = file_get_contents(__DIR__ . '/template-filesentry.yaml');
 
-foreach ($projects as $identifier => $projectData) {
-	$projectInfo = json_decode(file_get_contents(sprintf('http://api.crowdin.net/api/project/%s/info?json&key=%s', $identifier, $projectData['apiKey'])), TRUE);
-
-	// check if project exists
-	if (isset($projectInfo['success']) && $projectInfo['success'] === FALSE) {
-		echo 'Project ' . $projectData['name'] . ' does not exist, please create it.' . PHP_EOL;
-		continue;
+if ($useBundling === TRUE) {
+	if (!isset($projects['__bundle'])) {
+		echo 'No __bundle configuration found in configuration file.' . PHP_EOL;
+		exit(1);
 	}
 
-	// create crowdin.yaml
-	$configurationfilePathAndFilename = realpath(__DIR__ . '/../../../' . $projectData['path']) . '/crowdin.yaml';
-	$configurationFileContent = sprintf($configurationFileTemplate, $identifier, $projectData['apiKey']);
+	$bundleProjectIdentifier = $projects['__bundle']['projectIdentifier'];
+	$bundleProjectApiKey = $projects['__bundle']['apiKey'];
+	unset($projects['__bundle']);
+
+	if (projectExists($bundleProjectIdentifier, $bundleProjectApiKey) === FALSE) {
+		echo 'Project ' . $bundleProjectIdentifier . ' does not exist, please create it in Crowdin.' . PHP_EOL;
+		exit(1);
+	}
+
+	$filesEntryContent = '';
+	foreach ($projects as $identifier => $projectData) {
+		$projectPath = '/' . $projectData['path'];
+		$filesEntryContent .= sprintf($filesEntryTemplate, $projectPath, $projectPath);
+	}
+	$configurationFileContent = sprintf($configurationFileTemplate, $bundleProjectIdentifier, $bundleProjectApiKey, $filesEntryContent);
+
+	$configurationfilePathAndFilename = realpath(__DIR__ . '/../../../') . '/crowdin.yaml';
 	file_put_contents($configurationfilePathAndFilename, $configurationFileContent);
 	echo 'Wrote ' . $configurationfilePathAndFilename . PHP_EOL;
+} else {
+	foreach ($projects as $identifier => $projectData) {
+		if (!isset($projectData['apiKey'])) {
+			echo 'Project ' . $projectData['name'] . ' has no apiKey set.' . PHP_EOL;
+			continue;
+		}
+
+		if (projectExists($identifier, $projectData['apiKey']) === FALSE) {
+			echo 'Project ' . $projectData['name'] . ' does not exist, please create it in Crowdin.' . PHP_EOL;
+			continue;
+		}
+
+		$filesEntryContent = sprintf($filesEntryTemplate, '', '');
+		$configurationFileContent = sprintf($configurationFileTemplate, $identifier, $projectData['apiKey'], $filesEntryContent);
+
+		$configurationfilePathAndFilename = realpath(__DIR__ . '/../../../' . $projectData['path']) . '/crowdin.yaml';
+		file_put_contents($configurationfilePathAndFilename, $configurationFileContent);
+		echo 'Wrote ' . $configurationfilePathAndFilename . PHP_EOL;
+	}
 }
+
