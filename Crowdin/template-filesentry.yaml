@@ -1,4 +1,4 @@
   -
-    source: '%s/Resources/Private/Translations/en/*.xlf'
-    translation: '%s/Resources/Private/Translations/%%two_letters_code%%/%%original_file_name%%'
+    source: '%s/Resources/Private/Translations/en/**/*.xlf'
+    translation: '%s/Resources/Private/Translations/%%two_letters_code%%/**/%%original_file_name%%'
     update_option: 'update_as_unapproved'
