@@ -6,10 +6,10 @@ if [ "$DB" = "pgsql" ]; then
 	cat <<EOF > Configuration/Settings.yaml
 TYPO3:
   Flow:
-	persistence:
-	  backendOptions:
-		driver: pdo_pgsql
-		username: postgres
+    persistence:
+      backendOptions:
+        driver: pdo_pgsql
+        username: postgres
 EOF
 fi
 if [ "$DB" = "mysql" ]; then
@@ -17,9 +17,9 @@ if [ "$DB" = "mysql" ]; then
 	cat <<EOF > Configuration/Settings.yaml
 TYPO3:
   Flow:
-	persistence:
-	  backendOptions:
-		driver: pdo_mysql
-		username: root
+    persistence:
+      backendOptions:
+        driver: pdo_mysql
+        username: root
 EOF
 fi
