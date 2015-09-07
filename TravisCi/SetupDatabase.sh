@@ -9,7 +9,8 @@ TYPO3:
     persistence:
       backendOptions:
         driver: pdo_pgsql
-        user: postgres
+        user: 'postgres'
+        dbname: 'flow_functional_testing'
 EOF
 fi
 if [ "$DB" = "mysql" ]; then
@@ -20,6 +21,7 @@ TYPO3:
     persistence:
       backendOptions:
         driver: pdo_mysql
-        user: root
+        user: 'root'
+        dbname: 'flow_functional_testing'
 EOF
 fi
