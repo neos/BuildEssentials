@@ -10,9 +10,30 @@
 		convertWarningsToExceptions="true"
 		timeoutForSmallTests="0">
 	<testsuites>
-		<testsuite name="All tests">
+		<testsuite name="Application tests">
+			<directory>../../../Packages/Application/*/Tests/Functional</directory>
+		</testsuite>
+		<testsuite name="Framework tests">
+			<directory>../../../Packages/Framework/*/Tests/Functional</directory>
+		</testsuite>
+		<testsuite name="Neos tests">
+			<directory>../../../Packages/Neos/*/Tests/Functional</directory>
+		</testsuite>
+		<testsuite name="Plugins tests">
+			<directory>../../../Packages/Plugins/*/Tests/Functional</directory>
+		</testsuite>
+		<testsuite name="Sites tests">
+			<directory>../../../Packages/Sites/*/Tests/Functional</directory>
+		</testsuite>
+		<!-- A catch all testsuite for everything else -->
+		<testsuite name="Other tests">
 			<directory>../../../Packages/*/*/Tests/Functional</directory>
 			<exclude>../../../Packages/Libraries</exclude>
+			<exclude>../../../Packages/Application</exclude>
+			<exclude>../../../Packages/Framework</exclude>
+			<exclude>../../../Packages/Neos</exclude>
+			<exclude>../../../Packages/Plugins</exclude>
+			<exclude>../../../Packages/Sites</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>
