@@ -9,7 +9,7 @@ TYPO3:
     persistence:
       backendOptions:
         driver: pdo_pgsql
-        username: postgres
+        user: postgres
 EOF
 fi
 if [ "$DB" = "mysql" ]; then
@@ -20,6 +20,6 @@ TYPO3:
     persistence:
       backendOptions:
         driver: pdo_mysql
-        username: root
+        user: root
 EOF
 fi
