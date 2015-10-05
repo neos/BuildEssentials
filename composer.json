@@ -4,7 +4,7 @@
     "description": "TYPO3 Flow Build Toolchain Essentials",
     "license": ["LGPL-3.0+"],
     "require": {
-        "neos/composer-plugin": "^1.0.0"
+        "neos/composer-plugin": "^1.0.1"
     },
     "extra": {
         "installer-name": "BuildEssentials"
