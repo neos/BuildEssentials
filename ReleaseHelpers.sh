@@ -34,13 +34,13 @@ function commit_manifest_update {
 	local DIR=$4
 
 	if [ -z "${DIR}" ] ; then
-		if [[ `git status --porcelain composer.json` ]] ; then
-			git add composer.json
+		if [[ `git status --porcelain composer.json "*/composer.json"` ]] ; then
+			git add composer.json "*/composer.json"
 			git commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
 		fi
 	else
-		if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain composer.json` ]] ; then
-			git --git-dir "${DIR}/.git" --work-tree "${DIR}" add composer.json
+		if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain composer.json "*/composer.json"` ]] ; then
+			git --git-dir "${DIR}/.git" --work-tree "${DIR}" add composer.json "*/composer.json"
 			git --git-dir "${DIR}/.git" --work-tree "${DIR}" commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
 		fi
 	fi
