@@ -46,16 +46,6 @@ function commit_manifest_update {
 	fi
 }
 
-# arguments: BRANCH, BUILD_URL
-function commit_manifest_revert {
-	local BRANCH=$1
-	local BUILD_URL=$2
-
-	git checkout origin/$BRANCH composer.json
-	git add composer.json
-	git commit -m "[TASK] Revert composer manifest to dev versions" -m "See ${BUILD_URL}"
-}
-
 # arguments: BRANCH, DIR (optional)
 function push_branch {
 	local BRANCH=$1
