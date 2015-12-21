@@ -8,9 +8,9 @@ function tag_version {
 	local DIR=$4
 
 	if [ -z "${DIR}" ] ; then
-		git tag -f -a -m "[TASK] Tag as version ${VERSION}" -m "See ${BUILD_URL}" ${VERSION}
+		git tag -f -a -m "TASK: Tag as version ${VERSION}" -m "See ${BUILD_URL}" ${VERSION}
 	else
-		git --git-dir "${DIR}/.git" tag -f -a -m "[TASK] Tag as version ${VERSION}" -m "See ${BUILD_URL}" ${VERSION}
+		git --git-dir "${DIR}/.git" tag -f -a -m "TASK: Tag as version ${VERSION}" -m "See ${BUILD_URL}" ${VERSION}
 	fi
 }
 
@@ -41,7 +41,7 @@ function commit_manifest_update {
 			if [[ `git status --porcelain "*/composer.json"` ]] ; then
 				git add */composer.json
 			fi
-			git commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
+			git commit -m "TASK: Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
 		fi
 	else
 		if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain composer.json "*/composer.json"` ]] ; then
@@ -51,7 +51,7 @@ function commit_manifest_update {
 			if [[ `git --git-dir "${DIR}/.git" --work-tree "${DIR}" status --porcelain "*/composer.json"` ]] ; then
 				git --git-dir "${DIR}/.git" --work-tree "${DIR}" add "*/composer.json"
 			fi
-			git --git-dir "${DIR}/.git" --work-tree "${DIR}" commit -m "[TASK] Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
+			git --git-dir "${DIR}/.git" --work-tree "${DIR}" commit -m "TASK: Update composer manifest for ${VERSION}" -m "See ${BUILD_URL}"
 		fi
 	fi
 }
