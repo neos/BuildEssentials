@@ -38,9 +38,19 @@ function mergeAutoloadSection($joinedManifest, $manifestData, $sectionKey, $pack
             $joinedManifest[$sectionKey] = [];
         }
         foreach ($manifestData[$sectionKey] as $autoloadType => $mappings) {
-            foreach ($mappings as $namespace => $folder) {
-                $newFolder = implode('/', [$packageName, $folder]);
-                $joinedManifest[$sectionKey][$autoloadType][$namespace] = $newFolder;
+            foreach ($mappings as $namespace => $folders) {
+                if (!is_array($folders)) {
+                    $folders = [$folders];
+                }
+                $folders = array_map(function ($folder) use ($packageName) {
+                    return implode('/', [$packageName, $folder]);
+                }, $folders);
+
+                if (!isset($joinedManifest[$sectionKey][$autoloadType][$namespace])) {
+                    $joinedManifest[$sectionKey][$autoloadType][$namespace] = [];
+                }
+
+                $joinedManifest[$sectionKey][$autoloadType][$namespace] = array_merge($joinedManifest[$sectionKey][$autoloadType][$namespace], $folders);
             }
         }
     }
