@@ -2,7 +2,6 @@
 <phpunit
 		beStrictAboutChangesToGlobalState="true"
 		beStrictAboutTestsThatDoNotTestAnything="true"
-		checkForUnintentionallyCoveredCode="true"
 		beStrictAboutOutputDuringTests="true"
 		bootstrap="UnitTestBootstrap.php"
 		convertErrorsToExceptions="true"
