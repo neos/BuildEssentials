@@ -8,6 +8,7 @@ TYPO3:
   Flow:
     persistence:
       backendOptions:
+        host: '127.0.0.1'
         driver: pdo_pgsql
         user: 'postgres'
         dbname: 'flow_functional_testing'
@@ -20,6 +21,7 @@ TYPO3:
   Flow:
     persistence:
       backendOptions:
+        host: '127.0.0.1'
         driver: pdo_mysql
         user: 'root'
         dbname: 'flow_functional_testing'
