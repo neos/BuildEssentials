@@ -83,6 +83,10 @@ foreach ($composerManifests as $manifestFilepath) {
     if (isset($manifestData['extra'])) {
         $extras = $manifestData['extra'];
 
+        if (isset($extras['neos']['package-key'])) {
+            unset($extras['neos']['package-key']);
+        }
+
         if (isset($extras['neos']['installer-resource-folders']) && is_array($extras['neos']['installer-resource-folders'])) {
             $extras['neos']['installer-resource-folders'] = array_map(function ($resourceFolder) use ($packageName) {
                 return $packageName . '/' . $resourceFolder;
