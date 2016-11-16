@@ -26,5 +26,5 @@ if (DIRECTORY_SEPARATOR === '/') {
 
 require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/TYPO3.Flow/Classes/TYPO3/Flow/Core/Bootstrap.php');
 $bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
-$bootstrap->setPreselectedRequestHandlerClassName('TYPO3\Flow\Tests\FunctionalTestRequestHandler');
+$bootstrap->setPreselectedRequestHandlerClassName(\TYPO3\Flow\Tests\FunctionalTestRequestHandler::class);
 $bootstrap->run();
