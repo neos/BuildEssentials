@@ -27,7 +27,8 @@ if(!array_key_exists('repositories', $composerManifest)) {
 }
 $composerManifest['repositories'][] = [
     'type' => 'path',
-    'url' => '../../' . $travisRepoSlug
+    'url' => '../../' . $travisRepoSlug,
+    'options' => ['symlink' => false]
 ];
 
 // Refactor target version
