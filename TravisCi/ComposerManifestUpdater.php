@@ -15,7 +15,7 @@ if (empty($travisBranch)) {
     $travisBranch = getenv('TRAVIS_BRANCH');
 }
 
-if ($travisBranch === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
+if ($travisRepoSlug === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
     echo('ENV variables TRAVIS_REPO_SLUG, NEOS_TARGET_REPOSITORY or NEOS_TARGET_VERSION are not set');
     exit(1);
 }
