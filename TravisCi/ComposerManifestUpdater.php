@@ -49,6 +49,9 @@ if(isset($composerManifest['require'][$targetRepository])) {
 }
 
 $output = json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+
+print_r($output);
+
 file_put_contents('composer.json', $output);
 
 exit(0);
