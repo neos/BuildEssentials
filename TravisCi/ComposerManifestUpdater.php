@@ -7,7 +7,7 @@ if (!is_file('composer.json')) {
 }
 
 $travisRepoSlug = getenv('TRAVIS_REPO_SLUG');
-$travisBranch = getenv('TRAVIS_PULL_REQUEST_BRANCH');
+$travisBranch = 'dev-master';
 $targetRepository = getenv('NEOS_TARGET_REPOSITORY');
 $targetVersion = getenv('NEOS_TARGET_VERSION');
 
@@ -15,8 +15,8 @@ if (empty($travisBranch)) {
     $travisBranch = getenv('TRAVIS_BRANCH');
 }
 
-if ($travisRepoSlug === FALSE || $travisBranch === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
-    echo('ENV variables TRAVIS_REPO_SLUG, TRAVIS_BRANCH, NEOS_TARGET_REPOSITORY or NEOS_TARGET_VERSION are not set');
+if ($travisRepoSlug === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
+    echo('ENV variables TRAVIS_REPO_SLUG, NEOS_TARGET_REPOSITORY or NEOS_TARGET_VERSION are not set');
     exit(1);
 }
 
@@ -26,8 +26,8 @@ if(!array_key_exists('repositories', $composerManifest)) {
     $composerManifest['repositories'] = [];
 }
 $composerManifest['repositories'][] = [
-    'type' => 'git',
-    'url' => 'https://github.com/' . $travisRepoSlug
+    'type' => 'path',
+    'url' => '../../' . $travisRepoSlug
 ];
 
 // Refactor target version
@@ -35,13 +35,6 @@ if(strpos($targetVersion, '.')) {
     $targetVersion = rtrim($targetVersion, '.') . '.x-dev';
 } else {
     $targetVersion = 'dev-' . $targetVersion;
-}
-
-// Refactor travis Branch
-if(strpos($travisBranch, '.')) {
-    $travisBranch = rtrim($travisBranch, '.') . '.x-dev';
-} else {
-    $travisBranch = 'dev-' . $travisBranch;
 }
 
 // replace dev-collection
