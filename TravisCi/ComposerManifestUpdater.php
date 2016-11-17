@@ -7,7 +7,7 @@ if (!is_file('composer.json')) {
 }
 
 $travisRepoSlug = getenv('TRAVIS_REPO_SLUG');
-$travisBranch = 'dev-master';
+$travisBranch = 'dev-travis';
 $targetRepository = getenv('NEOS_TARGET_REPOSITORY');
 $targetVersion = getenv('NEOS_TARGET_VERSION');
 
@@ -26,9 +26,8 @@ if(!array_key_exists('repositories', $composerManifest)) {
     $composerManifest['repositories'] = [];
 }
 $composerManifest['repositories'][] = [
-    'type' => 'path',
-    'url' => '../../' . $travisRepoSlug,
-    'options' => ['symlink' => false]
+    'type' => 'git',
+    'url' => '../../' . $travisRepoSlug
 ];
 
 // Refactor target version
@@ -40,7 +39,8 @@ if(strpos($targetVersion, '.')) {
 
 // replace dev-collection
 if(isset($composerManifest['require'][$targetRepository])) {
-    $composerManifest['require'][$targetRepository] = $travisBranch . ' as ' . $targetVersion;
+    // We create a local branch "travis" in the travis.yml of the specific repository and use this for correct composer loading of the PR branch.
+    $composerManifest['require'][$targetRepository] = 'dev-travis' . ' as ' . $targetVersion;
 } else {
     echo('The package ' . $targetRepository . ' could not be found in composers require section');
     exit(1);
