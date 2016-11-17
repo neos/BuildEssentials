@@ -7,13 +7,8 @@ if (!is_file('composer.json')) {
 }
 
 $travisRepoSlug = getenv('TRAVIS_REPO_SLUG');
-$travisBranch = 'dev-travis';
 $targetRepository = getenv('NEOS_TARGET_REPOSITORY');
 $targetVersion = getenv('NEOS_TARGET_VERSION');
-
-if (empty($travisBranch)) {
-    $travisBranch = getenv('TRAVIS_BRANCH');
-}
 
 if ($travisRepoSlug === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
     echo('ENV variables TRAVIS_REPO_SLUG, NEOS_TARGET_REPOSITORY or NEOS_TARGET_VERSION are not set');
@@ -47,9 +42,6 @@ if(isset($composerManifest['require'][$targetRepository])) {
 }
 
 $output = json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
-
 print_r($output);
-
 file_put_contents('composer.json', $output);
-
 exit(0);
