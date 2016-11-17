@@ -26,8 +26,8 @@ if(!array_key_exists('repositories', $composerManifest)) {
     $composerManifest['repositories'] = [];
 }
 $composerManifest['repositories'][] = [
-    'type' => 'git',
-    'url' => 'https://github.com/' . $travisRepoSlug
+    'type' => 'path',
+    'url' => '../../' . $travisRepoSlug
 ];
 
 // Refactor target version
