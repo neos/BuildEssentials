@@ -33,15 +33,25 @@ if(strpos($targetVersion, '.')) {
     $targetVersion = 'dev-' . $targetVersion;
 }
 
+// Refactor travis Branch
+if(strpos($travisBranch, '.')) {
+    $travisBranch = rtrim($travisBranch, '.') . '.x-dev';
+} else {
+    $travisBranch = 'dev-' . $travisBranch;
+}
+
 // replace dev-collection
 if(isset($composerManifest['require'][$targetRepository])) {
-    $composerManifest['require'][$targetRepository] = 'dev-' . $travisBranch . ' as ' . $targetVersion;
+    $composerManifest['require'][$targetRepository] = $travisBranch . ' as ' . $targetVersion;
 } else {
     echo('The package ' . $targetRepository . ' could not be found in composers require section');
     exit(1);
 }
 
 $output = json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+
+print_r($output);
+
 file_put_contents('composer.json', $output);
 
 exit(0);
