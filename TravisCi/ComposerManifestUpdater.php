@@ -7,9 +7,13 @@ if (!is_file('composer.json')) {
 }
 
 $travisRepoSlug = getenv('TRAVIS_REPO_SLUG');
-$travisBranch = getenv('TRAVIS_BRANCH');
+$travisBranch = getenv('TRAVIS_PULL_REQUEST_BRANCH');
 $targetRepository = getenv('NEOS_TARGET_REPOSITORY');
 $targetVersion = getenv('NEOS_TARGET_VERSION');
+
+if (empty($travisBranch)) {
+    $travisBranch = getenv('TRAVIS_BRANCH');
+}
 
 if ($travisRepoSlug === FALSE || $travisBranch === FALSE || $targetRepository === FALSE || $targetVersion === FALSE) {
     echo('ENV variables TRAVIS_REPO_SLUG, TRAVIS_BRANCH, NEOS_TARGET_REPOSITORY or NEOS_TARGET_VERSION are not set');
