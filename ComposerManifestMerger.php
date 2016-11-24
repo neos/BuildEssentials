@@ -99,6 +99,11 @@ foreach ($composerManifests as $manifestFilepath) {
 
         $joinedManifest['extra'] = array_merge_recursive($joinedManifest['extra'], $extras);
     }
+
+    if (isset($manifestData['replace'])) {
+        $replace = $manifestData['replace'];
+        $joinedManifest['replace'] = array_merge_recursive($joinedManifest['replace'], $replace);
+    }
 }
 
 foreach ($joinedRepositoryPackages as $containedPackageName) {
