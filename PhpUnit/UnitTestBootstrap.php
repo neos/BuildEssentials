@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Build;
+namespace Neos\Flow\Build;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow build system.                    *
@@ -21,15 +21,15 @@ if (!class_exists('org\bovigo\vfs\vfsStream')) {
 	exit(PHP_EOL . 'TYPO3 Flow Bootstrap Error: The unit test bootstrap requires vfsStream to be installed. Try "composer update --dev".' . PHP_EOL . PHP_EOL);
 }
 
-spl_autoload_register('TYPO3\Flow\Build\loadClassForTesting');
+spl_autoload_register('Neos\Flow\Build\loadClassForTesting');
 
 $_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 $_SERVER['FLOW_WEBPATH'] = dirname(__FILE__) . '/../../../Web/';
-new \TYPO3\Flow\Core\Bootstrap('Production');
+new \Neos\Flow\Core\Bootstrap('Production');
 
 require_once(FLOW_PATH_FLOW . 'Tests/BaseTestCase.php');
 require_once(FLOW_PATH_FLOW . 'Tests/UnitTestCase.php');
-require_once(FLOW_PATH_FLOW . 'Classes/TYPO3/Flow/Error/Debugger.php');
+require_once(FLOW_PATH_FLOW . 'Classes/Error/Debugger.php');
 
 /**
  * A simple class loader that deals with the Framework classes and is intended

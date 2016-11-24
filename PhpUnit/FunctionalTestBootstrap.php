@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Build;
+namespace Neos\Flow\Build;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow build system.                    *
@@ -21,10 +21,10 @@ $_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 
 if (DIRECTORY_SEPARATOR === '/') {
 	// Fixes an issue with the autoloader, see FLOW-183
-	shell_exec('cd ' . escapeshellarg($_SERVER['FLOW_ROOTPATH']) . ' && FLOW_CONTEXT=Testing ./flow flow:cache:warmup');
+	shell_exec('cd ' . escapeshellarg($_SERVER['FLOW_ROOTPATH']) . ' && FLOW_CONTEXT=Testing ./flow neos:cache:warmup');
 }
 
-require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/TYPO3.Flow/Classes/TYPO3/Flow/Core/Bootstrap.php');
-$bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
-$bootstrap->setPreselectedRequestHandlerClassName(\TYPO3\Flow\Tests\FunctionalTestRequestHandler::class);
+require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/Neos.Flow/Classes/Core/Bootstrap.php');
+$bootstrap = new \Neos\Flow\Core\Bootstrap($context);
+$bootstrap->setPreselectedRequestHandlerClassName(\Neos\Flow\Tests\FunctionalTestRequestHandler::class);
 $bootstrap->run();
