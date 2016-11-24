@@ -87,6 +87,10 @@ foreach ($composerManifests as $manifestFilepath) {
             unset($extras['neos']['package-key']);
         }
 
+        if (array_key_exists('applied-flow-migrations', $extras)) {
+            unset($extras['applied-flow-migrations']);
+        }
+
         if (isset($extras['neos']['installer-resource-folders']) && is_array($extras['neos']['installer-resource-folders'])) {
             $extras['neos']['installer-resource-folders'] = array_map(function ($resourceFolder) use ($packageName) {
                 return $packageName . '/' . $resourceFolder;
