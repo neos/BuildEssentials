@@ -1,10 +1,13 @@
 {
-    "name": "typo3/buildessentials",
+    "name": "neos/buildessentials",
     "type": "neos-build",
-    "description": "TYPO3 Flow Build Toolchain Essentials",
+    "description": "Neos Flow Build Toolchain Essentials",
     "license": ["LGPL-3.0+"],
     "require": {
         "neos/composer-plugin": "^1.0.6|^2.0.0"
+    },
+    "replace": {
+        "typo3/buildessentials": "self.version"
     },
     "extra": {
         "installer-name": "BuildEssentials"

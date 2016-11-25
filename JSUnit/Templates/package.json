@@ -1,5 +1,5 @@
 {
-	"name": "TYPO3 Flow",
+	"name": "Neos Flow",
 	"version": "0.0.0",
 	"scripts": {
 		"server": "./Build/buildessentials/JSUnit/buster.sh",
