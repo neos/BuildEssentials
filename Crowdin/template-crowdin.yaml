@@ -1,5 +1,5 @@
 project_identifier: '%s'
-api_key: '%s'
+api_key%s: '%s'
 base_path: '.'
 
 files:
