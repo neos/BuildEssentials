@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <phpunit
 		beStrictAboutChangesToGlobalState="true"
-		beStrictAboutTestsThatDoNotTestAnything="true"
 		beStrictAboutOutputDuringTests="true"
 		bootstrap="UnitTestBootstrap.php"
 		convertErrorsToExceptions="true"
