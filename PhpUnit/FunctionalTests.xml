@@ -45,7 +45,7 @@
 		<log type="testdox-text" target="../../Reports/FunctionalTestDox.txt"/>
 	</logging>
 	<php>
-		<ini name="date.timezone" value="Europe/Berlin" />
+		<ini name="date.timezone" value="Africa/Tunis" />
 		<env name="FLOW_REWRITEURLS" value="1"/>
 	</php>
 </phpunit>
