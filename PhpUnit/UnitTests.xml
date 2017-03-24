@@ -22,6 +22,6 @@
 		<log type="junit" target="../../Reports/UnitTests.xml" logIncompleteSkipped="false"/>
 	</logging>
 	<php>
-		<ini name="date.timezone" value="Europe/Berlin" />
+		<ini name="date.timezone" value="Africa/Tunis" />
 	</php>
 </phpunit>
