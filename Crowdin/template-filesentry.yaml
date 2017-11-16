@@ -1,43 +1,62 @@
-  -
-    source: '%s/Resources/Private/Translations/en/**/*.xlf'
-    translation: '%s/Resources/Private/Translations/%%locale_with_underscore%%/**/%%original_file_name%%'
-    update_option: 'update_as_unapproved'
-    languages_mapping:
-      locale_with_underscore:
-        'af': 'af'
-        'ar': 'ar'
-        'ca': 'ca'
-        'cs': 'cs'
-        'da': 'da'
-        'de': 'de'
-        'el': 'el'
-        'en': 'en'
-        'es-ES': 'es'
-        'fi': 'fi'
-        'fr': 'fr'
-        'he': 'he'
-        'hu': 'hu'
-        'id-ID': 'id_ID'
-        'it': 'it'
-        'ja': 'ja'
-        'kk-KZ': 'kk_KZ'
-        'km': 'km'
-        'ko': 'ko'
-        'la-LA': 'la'
-        'lv': 'lv'
-        'mr': 'mr'
-        'nl': 'nl'
-        'no': 'no'
-        'pl': 'pl'
-        'ps': 'ps'
-        'pt-PT': 'pt'
-        'pt-BR': 'pt_BR'
-        'ro': 'ro'
-        'ru': 'ru'
-        'sr': 'sr'
-        'sv-SE': 'sv'
-        'tr': 'tr'
-        'uk': 'uk'
-        'vi': 'vi'
-        'zh-CN': 'zh'
+  {
+    #
+    # Source files filter
+    #
+    'source': '/%s/Resources/Private/Translations/en/**/*.xlf',
+
+    #
+    # where translations live
+    #
+    'translation': '/%s/Resources/Private/Translations/%%locale_with_underscore%%/**/%%original_file_name%%',
+
+    #
+    # The parameter 'update_option' is optional. If it is not set, translations for changed strings will be lost. Useful for typo fixes and minor changes in source strings.
+    # e.g. 'update_as_unapproved' or 'update_without_changes'
+    #
+    'update_option': 'update_as_unapproved',
+
+    #
+    # Often software projects have custom names for locale directories. crowdin-cli allows you to map your own languages to be understandable by Crowdin.
+    #
+    'languages_mapping': {
+      'locale_with_underscore': {
+        'af': 'af',
+        'ar': 'ar',
+        'ca': 'ca',
+        'cs': 'cs',
+        'da': 'da',
+        'de': 'de',
+        'el': 'el',
+        'en': 'en',
+        'es-ES': 'es',
+        'fi': 'fi',
+        'fr': 'fr',
+        'he': 'he',
+        'hu': 'hu',
+        'id-ID': 'id_ID',
+        'it': 'it',
+        'ja': 'ja',
+        'kk-KZ': 'kk_KZ',
+        'km': 'km',
+        'ko': 'ko',
+        'la-LA': 'la',
+        'lv': 'lv',
+        'mr': 'mr',
+        'nl': 'nl',
+        'no': 'no',
+        'pl': 'pl',
+        'ps': 'ps',
+        'pt-PT': 'pt',
+        'pt-BR': 'pt_BR',
+        'ro': 'ro',
+        'ru': 'ru',
+        'sr': 'sr',
+        'sv-SE': 'sv',
+        'tr': 'tr',
+        'uk': 'uk',
+        'vi': 'vi',
+        'zh-CN': 'zh',
         'zh-TW': 'zh_TW'
+      }
+    }
+  }
