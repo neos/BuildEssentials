@@ -10,21 +10,22 @@ if (!file_exists($argv[1])) {
     exit(1);
 }
 
-/** @var array $projects */
-$projects = json_decode(file_get_contents($argv[1]), true);
+/** @var array $configuration */
+$configuration = json_decode(file_get_contents($argv[1]), true);
 
-if (array_search('--bundle', $argv) !== false) {
-    $useBundling = true;
-} else {
-    $useBundling = false;
-    if (isset($projects['__bundle'])) {
-        unset($projects['__bundle']);
-    }
+if (!isset($configuration['project'])) {
+    echo 'No project entry found in configuration file.' . PHP_EOL;
+    exit(1);
 }
-$uploadTranslations = (array_search('--translations', $argv) !== false);
 
-$branch = isset($projects['branch']) ? $projects['branch'] : null;
-unset($projects['branch']);
+if (!isset($configuration['project']['branch'])) {
+    echo 'No project.branch entry found in configuration file.' . PHP_EOL;
+    exit(1);
+}
+$branch = $configuration['project']['branch'];
+
+$verbose = (array_search('--verbose', $argv) !== false);
+$uploadTranslations = (array_search('--translations', $argv) !== false);
 
 /**
  * Check if the given project exists on Crowdin.
@@ -55,23 +56,25 @@ function projectExists($identifier, $apiKey)
 function executeUpload($projectPath, $uploadTranslations, $branch = null)
 {
     if (file_exists($projectPath . '/crowdin.yaml')) {
-        if ($branch === null) {
-            echo sprintf('cd %s; crowdin-cli upload sources', escapeshellarg($projectPath)) . PHP_EOL;
-            passthru(sprintf('cd %s; crowdin-cli upload sources', escapeshellarg($projectPath)));
-            if ($uploadTranslations === true) {
-                echo sprintf('cd %s; crowdin-cli upload translations', escapeshellarg($projectPath)) . PHP_EOL;
-                passthru(sprintf('cd %s; crowdin-cli upload translations', escapeshellarg($projectPath)));
-            }
+        if ($branch === '') {
+            $command = sprintf('cd %s; crowdin upload sources', escapeshellarg($projectPath));
         } else {
-            echo sprintf('cd %s; crowdin-cli upload sources -b %s', escapeshellarg($projectPath), escapeshellarg($branch)) . PHP_EOL;
-            passthru(sprintf('cd %s; crowdin-cli upload sources -b %s', escapeshellarg($projectPath), escapeshellarg($branch)));
-            if ($uploadTranslations === true) {
-                echo sprintf('cd %s; crowdin-cli upload translations -b %s', escapeshellarg($projectPath), escapeshellarg($branch)) . PHP_EOL;
-                passthru(sprintf('cd %s; crowdin-cli upload translations -b %s', escapeshellarg($projectPath), escapeshellarg($branch)));
+            $command = sprintf('cd %s; crowdin upload sources --branch %s', escapeshellarg($projectPath), escapeshellarg($branch));
+        }
+        echo $command . PHP_EOL;
+        passthru($command);
+
+        if ($uploadTranslations === true) {
+            if ($branch === '') {
+                $command = sprintf('cd %s; crowdin upload translations', escapeshellarg($projectPath));
+            } else {
+                $command = sprintf('cd %s; crowdin upload translations --branch %s', escapeshellarg($projectPath), escapeshellarg($branch));
             }
+            echo $command . PHP_EOL;
+            passthru($command);
         }
     } else {
-        echo 'Project is not configured.' . PHP_EOL;
+        echo 'Project is not configured. Run setup first.' . PHP_EOL;
     }
 }
 
@@ -84,14 +87,16 @@ function executeUpload($projectPath, $uploadTranslations, $branch = null)
 function executeDownload($projectPath, $branch = null)
 {
     if (file_exists($projectPath . '/crowdin.yaml')) {
-        if ($branch === null) {
-            echo sprintf('cd %s; crowdin-cli download', escapeshellarg($projectPath)) . PHP_EOL;
-            passthru(sprintf('cd %s; crowdin-cli download', escapeshellarg($projectPath)));
+        if ($branch === '') {
+            $command = sprintf('cd %s; crowdin download', escapeshellarg($projectPath));
+            echo $command . PHP_EOL;
+            passthru($command);
         } else {
-            echo sprintf('cd %s; crowdin-cli download -b %s', escapeshellarg($projectPath), escapeshellarg($branch)) . PHP_EOL;
-            passthru(sprintf('cd %s; crowdin-cli download -b %s', escapeshellarg($projectPath), escapeshellarg($branch)));
+            $command = sprintf('cd %s; crowdin download --branch %s', escapeshellarg($projectPath), escapeshellarg($branch));
+            echo $command . PHP_EOL;
+            passthru($command);
         }
     } else {
-        echo 'Project is not configured.' . PHP_EOL;
+        echo 'Project is not configured. Run setup first.' . PHP_EOL;
     }
 }

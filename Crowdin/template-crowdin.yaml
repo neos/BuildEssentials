@@ -1,6 +1,19 @@
-project_identifier: '%s'
-api_key%s: '%s'
-base_path: '.'
+#
+# Your crowdin's credentials
+#
+"project_identifier": "%s"
+"api_key%s": "%s"
+"base_path": "."
 
-files:
+#
+# Choose file structure in crowdin
+# e.g. true or false
+#
+"preserve_hierarchy": true
+
+#
+# Files configuration
+#
+files: [
 %s
+]
