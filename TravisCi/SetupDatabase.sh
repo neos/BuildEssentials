@@ -12,6 +12,10 @@ Neos:
         driver: pdo_pgsql
         user: 'postgres'
         dbname: 'flow_functional_testing'
+        charset: 'utf8'
+        defaultTableOptions:
+          charset: 'utf8'
+
 EOF
 fi
 if [ "$DB" = "mysql" ]; then
