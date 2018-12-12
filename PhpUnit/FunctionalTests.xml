@@ -40,7 +40,7 @@
 		</whitelist>
 	</filter>
 	<logging>
-		<log type="junit" target="../../Reports/FunctionalTests.xml" logIncompleteSkipped="false"/>
+		<log type="junit" target="../../Reports/FunctionalTests.xml"/>
 		<log type="testdox-text" target="../../Reports/FunctionalTestDox.txt"/>
 	</logging>
 	<php>
