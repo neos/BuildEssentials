@@ -44,7 +44,7 @@ if(isset($composerManifest['require'][$targetRepository])) {
 // Merge dev requirements from dev-collection
 $buildComposerManifest = json_decode(file_get_contents('../../' . $travisRepoSlug . '/composer.json'), true);
 if (isset($buildComposerManifest['require-dev'])) {
-    $composerManifest['require-dev'] = array_merge($composerManifest['require-dev'], $buildComposerManifest['require-dev']);
+    $composerManifest['require-dev'] = array_merge($composerManifest['require-dev'] ?? [], $buildComposerManifest['require-dev']);
 }
 
 $output = json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
