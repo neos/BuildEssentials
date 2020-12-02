@@ -1,27 +1,28 @@
 <?xml version="1.0"?>
-<phpunit
-		beStrictAboutChangesToGlobalState="true"
-		beStrictAboutOutputDuringTests="true"
-		bootstrap="UnitTestBootstrap.php"
-		convertErrorsToExceptions="true"
-		convertNoticesToExceptions="true"
-		convertWarningsToExceptions="true"
-		timeoutForSmallTests="0">
-	<testsuites>
-		<testsuite name="All tests">
-			<directory>../../../Packages/*/*/Tests/Unit</directory>
-			<exclude>../../../Packages/Libraries</exclude>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="false">
-			<directory>../../../Packages/*/*/Classes</directory>
-		</whitelist>
-	</filter>
-	<logging>
-		<log type="junit" target="../../Reports/UnitTests.xml"/>
-	</logging>
-	<php>
-		<ini name="date.timezone" value="Africa/Tunis" />
-	</php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    bootstrap="UnitTestBootstrap.php"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    timeoutForSmallTests="0">
+  <testsuites>
+    <testsuite name="All tests">
+      <directory>../../../Packages/*/*/Tests/Unit</directory>
+      <exclude>../../../Packages/Libraries</exclude>
+    </testsuite>
+  </testsuites>
+  <coverage includeUncoveredFiles="false">
+    <include>
+      <directory>../../../Packages/*/*/Classes</directory>
+    </include>
+  </coverage>
+  <logging>
+    <junit outputFile="../../Reports/UnitTests.xml"/>
+  </logging>
+  <php>
+    <ini name="date.timezone" value="Africa/Tunis"/>
+  </php>
 </phpunit>
