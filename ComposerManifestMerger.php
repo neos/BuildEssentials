@@ -14,6 +14,9 @@ if (!is_file('.composer.json')) {
  */
 function mergeArraySection($joinedManifest, $manifestData, $sectionKey)
 {
+    if ($sectionKey !== 'require' && isset($joinedManifest[$sectionKey])) {
+        return $joinedManifest;
+    }
     if (isset($manifestData[$sectionKey])) {
         if (!isset($joinedManifest[$sectionKey])) {
             $joinedManifest[$sectionKey] = [];
