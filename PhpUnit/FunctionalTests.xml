@@ -36,7 +36,7 @@
 	</testsuites>
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory>../../../Data/Temporary/Testing/Cache/Flow_Object_Classes</directory>
+			<directory>../../../Data/Temporary/Testing/Cache/Code/Flow_Object_Classes/</directory>
 		</whitelist>
 	</filter>
 	<logging>
