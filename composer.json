@@ -6,9 +6,6 @@
     "require": {
         "neos/composer-plugin": "^2.0.0"
     },
-    "replace": {
-        "typo3/buildessentials": "self.version"
-    },
     "extra": {
         "installer-name": "BuildEssentials"
     }
