@@ -4,7 +4,9 @@
     "description": "Neos Flow Build Toolchain Essentials",
     "license": ["LGPL-3.0+"],
     "require": {
-        "neos/composer-plugin": "^2.0.0"
+        "neos/composer-plugin": "^2.0.0",
+        "symfony/console": "^5.1",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "extra": {
         "installer-name": "BuildEssentials"
