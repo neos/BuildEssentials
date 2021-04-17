@@ -21,7 +21,7 @@ $_SERVER['FLOW_ROOTPATH'] = dirname(__FILE__) . '/../../../';
 
 if (DIRECTORY_SEPARATOR === '/') {
 	// Fixes an issue with the autoloader, see FLOW-183
-	shell_exec('cd ' . escapeshellarg($_SERVER['FLOW_ROOTPATH']) . ' && FLOW_CONTEXT=Testing ./flow neos.flow:cache:warmup');
+	shell_exec('cd ' . escapeshellarg($_SERVER['FLOW_ROOTPATH']) . ' && FLOW_CONTEXT=' . escapeshellarg($context) . ' ./flow neos.flow:cache:warmup');
 }
 
 require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/Neos.Flow/Classes/Core/Bootstrap.php');

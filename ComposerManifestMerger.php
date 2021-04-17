@@ -15,6 +15,12 @@ if (!is_file('.composer.json')) {
 function mergeArraySection($joinedManifest, $manifestData, $sectionKey)
 {
     if (isset($manifestData[$sectionKey])) {
+        if ($sectionKey !== 'require') {
+            $manifestData[$sectionKey] = array_diff_key($manifestData[$sectionKey], $joinedManifest['require']);
+            if ($manifestData[$sectionKey] === []) {
+                return $joinedManifest;
+            }
+        }
         if (!isset($joinedManifest[$sectionKey])) {
             $joinedManifest[$sectionKey] = [];
         }
