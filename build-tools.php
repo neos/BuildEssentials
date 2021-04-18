@@ -160,7 +160,7 @@ class CreateChangelogCommand extends Command
      */
     protected function buildChangeLogEntry(array $pr): string
     {
-        $changeLogEntry = ["\`{$pr['title']} <{$pr['html_url']}>\`_"];
+        $changeLogEntry = ["`{$pr['title']} <{$pr['html_url']}>`_"];
         $this->addHeadlineMarkup($changeLogEntry, '-');
         $changeLogEntry[] = '';
         $changeLogEntry[] = $this->cleanupPrMessage($pr['body']);
@@ -258,7 +258,7 @@ class CreateChangelogCommand extends Command
         chdir('Packages/Framework');
 
         $date = date("Y-m-d");
-        $header = ["\`$version ($date) <https://github.com/neos/{$this->project}-development-collection/releases/tag/$version>\`_"];
+        $header = ["`$version ($date) <https://github.com/neos/{$this->project}-development-collection/releases/tag/$version>`_"];
         $this->addHeadlineMarkup($header, '=');
         $header[] = '';
         $header[] = "Overview of merged pull requests";
@@ -285,7 +285,7 @@ class CreateChangelogCommand extends Command
 
         $footer = [
             '',
-            "\`Detailed log <https://github.com/neos/{$this->project}-development-collection/compare/$prevVersion...$version>\`_"
+            "`Detailed log <https://github.com/neos/{$this->project}-development-collection/compare/$prevVersion...$version>`_"
         ];
         $this->addHeadlineMarkup($footer, '~');
         $footer[] = '';
