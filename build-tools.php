@@ -1,127 +1,221 @@
 #!/usr/bin/env php
 <?php
 require __DIR__.'/../../Packages/Libraries/autoload.php';
+require 'GitLogCommand.php';
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateChangelogCommand extends Command
+class CreateReleaseNotesCommand extends GitLogCommand
 {
     // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'neos:create-changelog';
+    protected static $defaultName = 'neos:create-releasenotes';
 
-    /**
-     * The development-collection repository prefix to use
-     * @var string
-     */
-    protected $project = 'flow';
-
-    /**
-     * The target filename for the changelog
-     * @var string
-     */
-    protected $target;
-
-    /**
-     * The file handle for the changelog
-     * @var resource
-     */
-    protected $fp;
-
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $httpClient;
-
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
-
-    /**
-     * @var array[]
-     */
-    protected $orderedMessages = [
-        'SECURITY' => [],
-        '!!!\s*FEATURE:' => [],
-        'FEATURE:' => [],
-        '!!!\s*BUGFIX:' => [],
-        'BUGFIX:' => [],
-        '!!!\s*TASK:' => [],
-        'TASK:' => [],
-        '\[?[A-Z]+\]?:' => [] // fallback for any other tag prefixed message
-    ];
-
-    protected function configure()
+    protected function buildLogEntry(array $pr): string
     {
-        $this
-            // the short description shown while running "php bin/console list"
-            ->setDescription('Creates the changelog between two versions.')
+        $logEntry = [(string)$pr['title']];
+        $this->addHeadlineMarkup($logEntry, '-');
+        $logEntry[] = '';
+        $logEntry[] = $this->cleanupPrMessage($pr['body']);
+        $logEntry[] = '';
+        if (preg_match('/(?:Fixes|Solves|Resolves):? #([0-9]+)/', $pr['body'], $matches) > 0) {
+            $issue = $matches[1];
+            $logEntry[] = "Related issue: `#$issue <https://github.com/neos/{$this->project}-development-collection/issues/$issue>`_";
+            $logEntry[] = '';
+        }
 
-            // the full command description shown when running the command with
-            // the "--help" option
-            ->setHelp('Create a changelog from two version branches or tags')
-
-            ->addArgument('project', InputArgument::REQUIRED, 'The development-collection prefix, either `flow` or `neos`')
-            ->addArgument('prevVersion', InputArgument::REQUIRED, 'The previous version, e.g. 6.2.14')
-            ->addArgument('version', InputArgument::REQUIRED, 'The version to generate the changelog for, e.g. 6.3.0')
-            ->addArgument('target', InputArgument::REQUIRED, 'The target file to write the changelog to')
-
-            ->addOption('buildUrl', null, InputOption::VALUE_OPTIONAL, 'The build URL to use in the commit message')
-            ->addOption('githubToken', null,InputOption::VALUE_OPTIONAL, 'To authenticate github calls and avoid API limits')
-            ->addOption('filter', null, InputOption::VALUE_OPTIONAL, 'A filter regex to apply to PR titles, e.g. "FEATURE" to only include features')
-            ->addOption('nocommit', null, InputOption::VALUE_NONE, 'Specify this if the changelog should not be committed')
-        ;
+        $message = implode("\n", $logEntry);
+        $this->output->writeln($message);
+        return $message;
     }
 
     /**
-     * Do some cleanup on the PR message - strip some technical comments, convert links, cleanup newlines and fix escape sequences
+     * Do some more cleanup for release notes
      */
     protected function cleanupPrMessage(string $message): string
     {
-        # Drop some footer lines from commit messages
-        $message = preg_replace('/^Change-Id: (I[a-f0-9]+)$/', '', $message);
-        $message = preg_replace('/^Releases?:.*$/', '', $message);
-        $message = preg_replace('/^Migration?:.*$/', '', $message);
-        $message = preg_replace('/^Reviewed-(by|on)?:.*$/', '', $message);
-        $message = preg_replace('/^Tested-by?:.*$/', '', $message);
-        $message = preg_replace('/<!--.*?-->\s*/s', '', $message);
-        $message = preg_replace('/\*\*Checklist\*\*.*?(- \[.\].*?[\r\n]+)+/s', '', $message);
-        $message = preg_replace('/\*\*(?:What I did|How I did it|How to verify it)\*\*[\n\s]+(?=(\*\*|$))/', '', $message);
-
-        # Link issues to Jira
-        $message = preg_replace('/(Fixes|Resolves|Related|Relates)?: (NEOS|FLOW)-([0-9]+)/', '* $1: `$2-$3 <https://jira.neos.io/browse/$2-$3>`_', $message);
-
-        # Link issues to GitHub
-        $message = preg_replace('/(Fixes|Solves|Resolves|Related(?:\sto)?|Relates|See):? #([0-9]+)/', "* $1: `#$2 <https://github.com/neos/{$this->project}-development-collection/issues/$2>`_", $message);
-        $message = preg_replace('/([a-zA-Z0-9]+\/[-.a-zA-Z0-9]+)#([0-9]+)/', '`#$2 <https://github.com/$1/issues/$2>`_', $message);
-        $message = preg_replace('/#([0-9]+)\s(?!<http)/', "`#$1 <https://github.com/neos/{$this->project}-development-collection/issues/$1>`_", $message);
-
-        # Link to commits
-        $message = preg_replace('/([0-9a-f]{40})/', "`$1 <https://github.com/neos/{$this->project}-development-collection/commit/$1>`_", $message);
-
-        # Convert Markdown links
-        $message = preg_replace('/\[([^]]+)\]\(([^)]+)\)/', '`$1 <$2>`_', $message);
-
-        # Convert Markdown single backticks
-        $message = preg_replace('/`([^`\n]+)`(?![_`])/', '``$1``', $message);
-
-        # escape backslashes
-        $message = preg_replace('/\\\\([^`])/', '\\\\\\\\$1', $message);
-
-        # clean up empty lines
-        $message = preg_replace('/\n\n+/', "\n\n", $message);
-        $message = preg_replace('/\n+$/', '', $message);
-
-        # join bullet list items
-        $message = preg_replace('/(\* [^\n]+)\n+(?=\* [^\n]+)/', "$1\n", $message);
+        $message = parent::cleanupPrMessage($message);
+        $message = preg_replace('/\*\*(?:What I did|How I did it|How to verify it)\*\*[\n\s]+/', '', $message);
+        $message = preg_replace('%\* .*?: `#\d+ <https://github.com/neos/[a-z]+-development-collection/issues/\d+>`_%', '', $message);
 
         return $message;
     }
+
+    protected function getCommitMessage(string $version): string
+    {
+        $version = $this->getMinorVersionNumber($version);
+        return "TASK: Add release notes for $version [skip ci]";
+    }
+
+    /**
+     * Extract the version number part up to the minor version from a version string.
+     * E.g. "7.0.5" => "7.0"
+     */
+    protected function getMinorVersionNumber(string $version): string
+    {
+        preg_match('/(\d+\.\d+)/', $version, $matches);
+        return $matches[1];
+    }
+
+    protected function getHeaderLines(string $prevVersion, string $version): array
+    {
+        $header = $this->printPreface($this->getMinorVersionNumber($version));
+        $header[] = "************
+New Features
+************
+
+";
+        return $header;
+    }
+
+    protected function getFooterLines(string $prevVersion, string $version): array
+    {
+        $footer = $this->printUpgradeInstructions($this->getMinorVersionNumber($prevVersion), $this->getMinorVersionNumber($version));
+        return array_merge($footer, $this->printBreakingChanges($this->getMinorVersionNumber($version)));
+    }
+
+    protected function printBreakingChanges(string $version): array
+    {
+        $breakingChanges = ["
+****************************
+Potentially breaking changes
+****************************
+
+Flow $version comes with some breaking changes and removes several deprecated
+functionalities, be sure to read the following changes and adjust
+your code respectively. For a full list of changes please refer
+to the change log.
+"];
+        foreach ($this->orderedMessages as $key => $list) {
+            if (substr($key, 0, 2) !== '!!') {
+                continue;
+            }
+            $breakingChanges = array_merge($breakingChanges, $list);
+        }
+        return count($breakingChanges) > 1 ? $breakingChanges : [];
+    }
+
+    protected function printPreface(string $version): array
+    {
+        if (substr($version, -2) === '.0') {
+            $isMajorRelease = true;
+        }
+
+        $project = ucfirst($this->project);
+        return ["========
+$project $version
+========
+
+This release of $project comes with some great new features, bugfixes and a lot of modernisation of the existing code base.
+", "As usual, we worked hard to keep this release as backwards compatible as possible but, since it's a major release, some of the changes might require manual
+adjustments. So please make sure to carefully read the upgrade instructions below.
+", $isMajorRelease ? "$project $version also increases the minimal required PHP version to **7.3**." : ""];
+    }
+
+    protected function printUpgradeInstructions(string $prevVersion, string $version): array
+    {
+        $dependencyVersionChanges = ""; // TODO
+
+        $versionSlug = str_replace('.', '-', "$prevVersion.$version");
+        $versionFile = str_replace('.', '', $version . '0');
+        if ($this->project === 'neos') {
+            return ["
+********************
+Upgrade Instructions
+********************
+
+See https://www.neos.io/download-and-extend/upgrade-instructions-$versionSlug.html
+
+.. note::
+
+   Additionally all changes in Flow $version apply, see the release notes to further information.
+   See https://flowframework.readthedocs.org/en/$version/TheDefinitiveGuide/PartV/ReleaseNotes/$versionFile.html
+"];
+        }
+
+        return ["
+********************
+Upgrade Instructions
+********************
+
+This section contains instructions for upgrading your Flow **$prevVersion**
+based applications to Flow **$version**.
+$dependencyVersionChanges
+In general just make sure to run the following commands:
+
+To clear all file caches::
+
+ ./flow flow:cache:flush --force
+
+If you have additional cache backends configured, make sure to flush them too.
+
+To apply core migrations::
+
+  ./flow flow:core:migrate <Package-Key>
+
+For every package you have control over (see `Upgrading existing code`_ below).
+
+To validate/fix the database encoding, apply pending migrations and to (re)publish file resources::
+
+ ./flow database:setcharset
+ ./flow doctrine:migrate
+ ./flow resource:publish
+
+If you are upgrading from a lower version than $prevVersion, be sure to read the
+upgrade instructions from the previous Release Notes first.
+
+Upgrading your Packages
+=======================
+
+Upgrading existing code
+-----------------------
+
+There have been major API changes in Flow $version which require your code to be adjusted. As with earlier changes to Flow
+that required code changes on the user side we provide a code migration tool.
+
+Given you have a Flow system with your (outdated) package in place you should run the following before attempting to fix
+anything by hand::
+
+ ./flow core:migrate Acme.Demo
+
+This will adjust the package code automatically and/or output further information.
+Read the output carefully and manually adjust the code if needed.
+
+To see all the other helpful options this command provides, make sure to run::
+
+ ./flow help core:migrate
+
+Also make sure to read about the `Potentially breaking changes`_ below.
+
+Inside core:migrate
+^^^^^^^^^^^^^^^^^^^
+
+The tool roughly works like this:
+
+* Collect all code migrations from packages
+
+* Collect all files from the specified package
+* For each migration
+
+  * Check for clean git working copy (otherwise skip it)
+  * Check if migration is needed (looks for Migration footers in commit messages)
+  * Apply migration and commit the changes
+
+Afterwards you probably get a list of warnings and notes from the
+migrations, check those to see if anything needs to be done manually.
+
+Check the created commits and feel free to amend as needed, should
+things be missing or wrong. The only thing you must keep in place from
+the generated commits is the migration data in ``composer.json``. It is
+used to detect if a migration has been applied already, so if you drop
+it, things might get out of hands in the future.
+"];
+    }
+}
+
+class CreateChangeLogCommand extends GitLogCommand
+{
+    // the name of the command (the part after "bin/console")
+    protected static $defaultName = 'neos:create-changelog';
 
     /**
      * Walk through the affected files in the $mergeCommit, extract the package name from the path and
@@ -145,20 +239,9 @@ class CreateChangelogCommand extends Command
     }
 
     /**
-     * Add a line of repeating $underlineCharacter`s that match the length of the last line.
-     */
-    protected function addHeadlineMarkup(array &$lines, string $underlineCharacter = '='): void
-    {
-        $lastLine = end($lines);
-        if ($lastLine) {
-            $lines[] = str_repeat($underlineCharacter, strlen($lastLine));
-        }
-    }
-
-    /**
      * Build a changelog entry for the given parsed PR info
      */
-    protected function buildChangeLogEntry(array $pr): string
+    protected function buildLogEntry(array $pr): string
     {
         $changeLogEntry = ["`{$pr['title']} <{$pr['html_url']}>`_"];
         $this->addHeadlineMarkup($changeLogEntry, '-');
@@ -171,92 +254,13 @@ class CreateChangelogCommand extends Command
         return $message;
     }
 
-    /**
-     * Build a changelog entry from the given PR and append it into the list of ordered messages
-     */
-    protected function orderChangeLogEntry(?array $pr, ?string $filter): void
+    protected function getCommitMessage(string $version): string
     {
-        if ($pr === null) {
-            return;
-        }
-        foreach (array_keys($this->orderedMessages) as $titlePrefix) {
-            if ($filter !== null && preg_match('/' . $filter .'/', $pr['title']) < 1) {
-                continue;
-            }
-            if (preg_match('/'.$titlePrefix.'/', $pr['title']) > 0) {
-                $this->orderedMessages[$titlePrefix][] = $this->buildChangeLogEntry($pr);
-                break;
-            }
-        }
+        return "TASK: Add changelog for $version [skip ci]";
     }
 
-    protected function getOrderedMessages(): array
+    protected function getHeaderLines(string $prevVersion, string $version): array
     {
-        return array_merge(...array_values($this->orderedMessages));
-    }
-
-    protected function writeChangeLog(array $lines, bool $close = false): void
-    {
-        if (!$this->fp) {
-            $this->fp = fopen($this->target, 'wb+');
-        }
-        fwrite($this->fp, implode("\n", $lines));
-        if ($close === true) {
-            fclose($this->fp);
-        }
-    }
-
-    protected function commitChangeLog(string $version, ?string $buildUrl): void
-    {
-        $logType = strpos($this->target, 'ReleaseNotes') !== false ? 'release notes' : 'changelog';
-        $this->output->writeln(shell_exec("git add {$this->target}"));
-        $commitCommand = "git commit -m \"TASK: Add $logType for $version [skip ci]\"";
-        if ($buildUrl) {
-            $commitCommand .= " -m \"See $buildUrl\"";
-        }
-        $this->output->writeln(shell_exec($commitCommand . ' || echo " nothing to commit "'));
-    }
-
-    protected function fetchPr(string $pullRequest, ?string $githubToken): ?array
-    {
-        if (!$this->httpClient) {
-            $this->httpClient = new GuzzleHttp\Client([
-                'headers' => $githubToken ? [
-                    'Authorization' => "token $githubToken"
-                ] : []
-            ]);
-        }
-
-        $url = "https://api.github.com/repos/neos/{$this->project}-development-collection/pulls/$pullRequest";
-        $this->output->writeln("fetching info from $url");
-
-        try {
-            $response = $this->httpClient->get($url);
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            $this->output->writeln("Error fetching PR $pullRequest: " . $e->getMessage());
-            return null;
-        }
-        if ($response->getStatusCode() !== 200) {
-            $this->output->writeln("Error fetching PR $pullRequest ({$response->getStatusCode()}): {$response->getBody()->getContents()}");
-            return null;
-        }
-        return json_decode($response->getBody()->getContents(), true);
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->output = $output;
-        $prevVersion = $input->getArgument('prevVersion');
-        $version = $input->getArgument('version');
-        // "Neos.Flow/Documentation/TheDefinitiveGuide/PartV/ChangeLogs/$version.rst"
-        $this->target = $input->getArgument('target');
-
-        $githubToken = $input->getOption('githubToken');
-        $buildUrl = $input->getOption('buildUrl');
-        $filter = $input->getOption('filter');
-
-        chdir('Packages/Framework');
-
         $date = date("Y-m-d");
         $header = ["`$version ($date) <https://github.com/neos/{$this->project}-development-collection/releases/tag/$version>`_"];
         $this->addHeadlineMarkup($header, '=');
@@ -265,41 +269,24 @@ class CreateChangelogCommand extends Command
         $this->addHeadlineMarkup($header, '~');
         $header[] = '';
         $header[] = '';
-        $this->writeChangeLog($header);
+        return $header;
+    }
 
-        $gitLog = explode("\n", shell_exec("git log $prevVersion..$(git tag -l $version) --grep=\"^Merge pull request\" --oneline | cut -d ' ' -f1"));
-        foreach ($gitLog as $mergeCommit) {
-            if (!$mergeCommit) {
-                continue;
-            }
-            $pullRequest = trim(shell_exec("git show $mergeCommit --no-patch --oneline | cut -d ' ' -f5 | cut -c2-"));
-
-            if (!is_numeric($pullRequest)) {
-                $this->output->writeln("Ignoring Merge $mergeCommit as it referenced an invalid PR #$pullRequest");
-                continue;
-            }
-            $pr = $this->fetchPr($pullRequest, $githubToken);
-            $this->orderChangeLogEntry($pr, $filter);
-        }
-        $this->writeChangeLog($this->getOrderedMessages());
-
+    protected function getFooterLines(string $prevVersion, string $version): array
+    {
         $footer = [
             '',
             "`Detailed log <https://github.com/neos/{$this->project}-development-collection/compare/$prevVersion...$version>`_"
         ];
         $this->addHeadlineMarkup($footer, '~');
         $footer[] = '';
-        $this->writeChangeLog($footer, true);
-
-        if (!$input->getOption('nocommit')) {
-            $this->commitChangeLog($version, $buildUrl);
-        }
-        return Command::SUCCESS;
+        return $footer;
     }
 }
 
 $application = new Application();
 
-$application->add(new CreateChangelogCommand());
+$application->add(new CreateChangeLogCommand());
+$application->add(new CreateReleaseNotesCommand());
 
 $application->run();
