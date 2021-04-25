@@ -158,6 +158,11 @@ abstract class GitLogCommand extends Command
     {
         if (!$this->fp) {
             $this->fp = fopen($this->target, 'wb+');
+            if ($this->fp === false) {
+                throw new Error("Error opening {$this->target} for writing.");
+            }
+            $this->output->writeln(getcwd());
+            $this->output->writeln("Created {$this->target}.");
         }
         fwrite($this->fp, implode("\n", $lines));
         if ($close === true) {

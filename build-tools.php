@@ -75,12 +75,13 @@ New Features
 
     protected function printBreakingChanges(string $version): array
     {
+        $project = ucfirst($this->project);
         $breakingChanges = ["
 ****************************
 Potentially breaking changes
 ****************************
 
-Flow $version comes with some breaking changes and removes several deprecated
+$project $version comes with some breaking changes and removes several deprecated
 functionalities, be sure to read the following changes and adjust
 your code respectively. For a full list of changes please refer
 to the change log.
@@ -96,9 +97,7 @@ to the change log.
 
     protected function printPreface(string $version): array
     {
-        if (substr($version, -2) === '.0') {
-            $isMajorRelease = true;
-        }
+        $isMajorRelease = substr($version, -2) === '.0';
 
         $project = ucfirst($this->project);
         return ["========
