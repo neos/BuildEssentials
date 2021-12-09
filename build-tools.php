@@ -245,7 +245,9 @@ class CreateChangeLogCommand extends GitLogCommand
         $changeLogEntry = ["`{$pr['title']} <{$pr['html_url']}>`_"];
         $this->addHeadlineMarkup($changeLogEntry, '-');
         $changeLogEntry[] = '';
-        $changeLogEntry[] = $this->cleanupPrMessage($pr['body']);
+        if (isset($pr['body'])) {
+            $changeLogEntry[] = $this->cleanupPrMessage($pr['body']);
+        }
         $this->extractAffectedPackages($changeLogEntry, $pr['merge_commit_sha']);
         $changeLogEntry[] = '';
         $message = implode("\n", $changeLogEntry);
