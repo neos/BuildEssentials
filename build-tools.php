@@ -122,7 +122,7 @@ adjustments. So please make sure to carefully read the upgrade instructions belo
 Upgrade Instructions
 ********************
 
-See https://www.neos.io/download-and-extend/upgrade-instructions-$versionSlug.html
+See https://docs.neos.io/cms/references/upgrade-instructions/upgrade-instructions-$versionSlug
 
 .. note::
 
