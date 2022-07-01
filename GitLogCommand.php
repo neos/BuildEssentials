@@ -85,10 +85,7 @@ abstract class GitLogCommand extends Command
         $message = preg_replace('/^Tested-by?:.*$/', '', $message);
         $message = preg_replace('/<!--.*?-->\s*/s', '', $message);
         $message = preg_replace('/\*\*Checklist\*\*.*?(- \[.\].*?[\r\n]+)+/s', '', $message);
-        $message = preg_replace('/\*\*(?:What I did|How I did it|How to verify it)\*\*[\n\s]+(?=(\*\*|$))/', '', $message);
-
-        # Link issues to Jira
-        $message = preg_replace('/(Fixes|Resolves|Related|Relates)?: (NEOS|FLOW)-([0-9]+)/', '* $1: `$2-$3 <https://jira.neos.io/browse/$2-$3>`_', $message);
+        $message = preg_replace('/\*\*(?:What I did|How I did it|How to verify it|Review instructions)\*\*[\n\s]+(?=(\*\*|$))/', '', $message);
 
         # Link issues to GitHub
         $message = preg_replace('/(Fixes|Solves|Resolves|Related(?:\sto)?|Relates|See):? #([0-9]+)/', "* $1: `#$2 <https://github.com/neos/{$this->project}-development-collection/issues/$2>`_", $message);
