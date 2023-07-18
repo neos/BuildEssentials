@@ -199,7 +199,7 @@ abstract class GitLogCommand extends Command
 
     protected function commitLog(string $message, ?string $buildUrl): void
     {
-        $this->output->writeln(shell_exec("git add {$this->target}"));
+        $this->output->writeln((string)shell_exec("git add {$this->target}"));
         $commitCommand = "git commit -m \"$message\"";
         if ($buildUrl) {
             $commitCommand .= " -m \"See $buildUrl\"";
