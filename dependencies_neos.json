@@ -1,0 +1,28 @@
+{
+  "BaseDistribution": {
+    "require": {
+      "neos/demo": "$version"
+    },
+    "require-dev": {
+      "neos/behat": "$version",
+      "neos/buildessentials": "$version",
+      "neos/site-kickstarter": "$version",
+      "neos/cli-setup": "$version"
+    }
+  },
+  "DevDistribution": {
+    "require": {
+      "neos/neos-development-collection": "$version",
+      "neos/demo": "$version",
+      "neos/site-kickstarter": "$version",
+      "neos/cli-setup": "$version"
+    },
+    "require-dev": {
+      "neos/behat": "$version",
+      "neos/buildessentials": "$version"
+    }
+  },
+  "Neos": {
+    "setFlowDependenciesForAllPackages": "~$flowBranch.0"
+  }
+}
