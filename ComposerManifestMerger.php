@@ -65,7 +65,7 @@ foreach ($composerManifests as $manifestFilepath) {
 
     $joinedRepositoryPackages[] = $manifestData['name'];
 
-    foreach (['require', 'require-dev', 'suggest'] as $arraySectionKey) {
+    foreach (['require', 'require-dev', 'suggest', 'provide'] as $arraySectionKey) {
         $joinedManifest = mergeArraySection($joinedManifest, $manifestData, $arraySectionKey);
     }
 
@@ -97,11 +97,20 @@ foreach ($composerManifests as $manifestFilepath) {
         $replace = $manifestData['replace'];
         $joinedManifest['replace'] = array_merge_recursive($joinedManifest['replace'], $replace);
     }
+
+    if (isset($manifestData['provide'])) {
+        $provide = $manifestData['provide'];
+        $joinedManifest['provide'] = array_merge_recursive($joinedManifest['provide'], $provide);
+    }
 }
 
 foreach ($joinedRepositoryPackages as $containedPackageName) {
     unset($joinedManifest['require'][$containedPackageName]);
     $joinedManifest['replace'][$containedPackageName] = 'self.version';
+}
+
+foreach ($joinedManifest['provide'] as $packageName => $versions) {
+    $joinedManifest['provide'][$packageName] = current($versions);
 }
 
 $joinedComposerJson = json_encode($joinedManifest, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
