@@ -9,6 +9,13 @@
         "symfony/console": "^5.1 || ^6.0",
         "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
+    "autoload": {
+        "psr-4": {
+            "Neos\\BuildEssentials\\": [
+                "Classes"
+            ]
+        }
+    },
     "extra": {
         "installer-name": "BuildEssentials"
     }
