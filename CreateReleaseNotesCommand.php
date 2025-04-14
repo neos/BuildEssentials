@@ -95,8 +95,6 @@ to the change log.
 
     protected function printPreface(string $version): array
     {
-        $isMajorRelease = substr($version, -2) === '.0';
-
         $project = ucfirst($this->project);
         return [
             "========
@@ -106,7 +104,7 @@ $project $version
 This release of $project comes with some great new features, bugfixes and a lot of modernisation of the existing code base.
 ", "As usual, we worked hard to keep this release as backwards compatible as possible but, since it's a major release, some of the changes might require manual
 adjustments. So please make sure to carefully read the upgrade instructions below.
-", $isMajorRelease ? "$project $version also increases the minimal required PHP version to **7.3**." : ""
+"
         ];
     }
 
