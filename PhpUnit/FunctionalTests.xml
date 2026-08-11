@@ -1,13 +1,5 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-    beStrictAboutChangesToGlobalState="true"
-    beStrictAboutOutputDuringTests="true"
-    bootstrap="FunctionalTestBootstrap.php"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    timeoutForSmallTests="0">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd" beStrictAboutChangesToGlobalState="true" beStrictAboutOutputDuringTests="true" bootstrap="FunctionalTestBootstrap.php" timeoutForSmallTests="0" cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="Application tests">
       <directory>../../../Packages/Application/*/Tests/Functional</directory>
@@ -35,11 +27,6 @@
       <exclude>../../../Packages/Sites</exclude>
     </testsuite>
   </testsuites>
-  <coverage includeUncoveredFiles="true">
-    <include>
-      <directory>../../../Data/Temporary/Testing/Cache/Code/Flow_Object_Classes/</directory>
-    </include>
-  </coverage>
   <logging>
     <junit outputFile="../../Reports/FunctionalTests.xml"/>
     <testdoxText outputFile="../../Reports/FunctionalTestDox.txt"/>
@@ -48,4 +35,9 @@
     <ini name="date.timezone" value="Africa/Tunis"/>
     <env name="FLOW_REWRITEURLS" value="1"/>
   </php>
+  <source>
+    <include>
+      <directory>../../../Data/Temporary/Testing/Cache/Code/Flow_Object_Classes/</directory>
+    </include>
+  </source>
 </phpunit>
