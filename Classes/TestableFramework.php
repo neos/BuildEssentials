@@ -49,10 +49,6 @@ abstract readonly class TestableFramework
     public static function buildBootstrapWithPreselectedRequestHandler(string $context, string $requestHandlerClassname): Bootstrap
     {
         $flowBootstrap = new Bootstrap($context);
-        $requestHandlerInstance = new $requestHandlerClassname($flowBootstrap);
-        assert($requestHandlerInstance instanceof RequestHandlerInterface);
-
-        $flowBootstrap->registerRequestHandler($requestHandlerInstance);
         $flowBootstrap->setPreselectedRequestHandlerClassName($requestHandlerClassname);
         return $flowBootstrap;
     }

@@ -23,6 +23,5 @@ $_SERVER['FLOW_ROOTPATH'] = TestableFramework::calculateRootPath();
 
 require_once($_SERVER['FLOW_ROOTPATH'] . 'Packages/Framework/Neos.Flow/Classes/Core/Bootstrap.php');
 $bootstrap = new Bootstrap($context);
-$bootstrap->registerRequestHandler(new RuntimeSequenceHttpRequestHandler($bootstrap));
 $bootstrap->setPreselectedRequestHandlerClassName(RuntimeSequenceHttpRequestHandler::class);
 $bootstrap->run();
